@@ -1,4 +1,4 @@
-name: stactools-ephemeral
+name: stactools-goes-glm
 channels:
   - conda-forge
   - defaults

@@ -1,8 +1,8 @@
 import unittest
 
-import stactools.ephemeral
+import stactools.goes_glm
 
 
 class TestModule(unittest.TestCase):
     def test_version(self) -> None:
-        self.assertIsNotNone(stactools.ephemeral.__version__)
+        self.assertIsNotNone(stactools.goes_glm.__version__)

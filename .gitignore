@@ -1,4 +1,4 @@
-tests/data-files/external
+tests/examples
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

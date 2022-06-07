@@ -22,4 +22,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Nothing.
 
-[Unreleased]: <https://github.com/stactools-packages/ephemeral/tree/main/>
+[Unreleased]: <https://github.com/stactools-packages/goes-glm/tree/main/>

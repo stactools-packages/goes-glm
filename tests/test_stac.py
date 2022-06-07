@@ -1,6 +1,6 @@
 import unittest
 
-from stactools.ephemeral import stac
+from stactools.goes_glm import stac
 
 
 class StacTest(unittest.TestCase):
