@@ -6,18 +6,22 @@
 - Package: `stactools.goes_glm`
 - PyPI: <https://pypi.org/project/stactools-goes-glm/>
 - Owner: @m-mohr
-- Dataset homepage: <https://www.goes-r.gov/spacesegment/glm.html> / <https://ghrc.nsstc.nasa.gov/lightning/overview_glm.html>
+- Dataset homepage:
+  - <https://www.goes-r.gov/spacesegment/glm.html>
+  - <https://ghrc.nsstc.nasa.gov/lightning/overview_glm.html>
 - STAC extensions used:
-  - [raster](https://github.com/stac-extensions/raster/)
+  - [datacube](https://github.com/stac-extensions/datacube/) (for netCDF only)
+  - [GOES](https://github.com/stac-extensions/goes/)
+  - [processing](https://github.com/stac-extensions/processing/)
   - [proj](https://github.com/stac-extensions/projection/)
-- Extra fields:
-  - See [GOES GLM extension](./extension/README.md) for details
+  - [table](https://github.com/stac-extensions/table/) (for geoparquet only)
+- Extra fields have been defined in the [GOES extension](https://github.com/stac-extensions/goes/) so that they can be shared across multiple GOES products.
 
-A stactools package for the Geostationary Lightning Mapper (GLM) dataset, which is on the GOES-16 (GEOS-R) satellite.
+A stactools package for the Geostationary Lightning Mapper (GLM) dataset, which is on the GOES-16/R and GOES-17/S satellites.
 GLM detects all forms of lightning during both day and night, continuously, with a high spatial resolution and detection efficiency.
 
 This package can generate STAC files from netCDF files and that either link to the original netCDF files or
-to cloud-optimized GeoTiffs (COGs) in the original or any other EPSG projection.
+to geoparquet files.
 
 ## STAC Examples
 
@@ -35,36 +39,36 @@ pip install stactools-goes-glm
 
 ### Collection
 
-Create a collection, e.g. 24-hour Pass 2:
+Create a collection:
 
 ```shell
-stac goes_glm create-collection collection.json
+stac goes-glm create-collection collection.json --license=https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ncdc:C01527
 ```
 
 Get information about all options for collection creation:
 
 ```shell
-stac goes_glm create-collection --help
+stac goes-glm create-collection --help
 ```
 
 ### Item
 
-Create an item for continentel US with a GRIB2 asset:
+Create an item with a netCDF and multiple geoparquet asset:
 
 ```shell
-stac goes_glm create-item MRMS_MultiSensor_QPE_24H_Pass2_00.00_20220530-120000.grib2.gz item_grib.json --collection collection.json
+stac goes-glm create-item OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004_c20210010000030.nc item.json --collection collection.json
 ```
 
-Create an item for ALASKA with a COG asset converted to EPSG:3857:
+Create an item with only geoparquet assets:
 
 ```shell
-stac goes_glm create-item MRMS_MultiSensor_QPE_24H_Pass2_00.00_20220530-120000.grib2.gz item.json --aoi ALASKA --collection collection.json --cog TRUE --epsg 3857
+stac goes-glm create-item OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200_c20221542100217.nc item.json --collection collection.json --nonetcdf TRUE
 ```
 
 Get information about all options for item creation:
 
 ```shell
-stac goes_glm create-item --help
+stac goes-glm create-item --help
 ```
 
 Use `stac goes-glm --help` to see all subcommands and options.

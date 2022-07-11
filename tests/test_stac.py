@@ -2,12 +2,14 @@ import unittest
 
 from stactools.goes_glm import stac
 
+LICENSE = "https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ncdc:C01527"
+
 
 class StacTest(unittest.TestCase):
     def test_create_collection(self) -> None:
         # Write tests for each for the creation of a STAC Collection
         # Create the STAC Collection...
-        collection = stac.create_collection()
+        collection = stac.create_collection(license=LICENSE)
         collection.set_self_href("")
 
         # Check that it has some required attributes
