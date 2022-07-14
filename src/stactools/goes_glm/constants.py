@@ -99,6 +99,8 @@ PARQUET_MEDIA_TYPE = "application/x-parquet"
 PARQUET_ROLES = ["data", "cloud-optimized"]
 PARQUET_GEOMETRY_COL = "geometry"
 
+IGNORED_UNITS = ["1", "count"]
+
 NETCDF_TITLE = "Original netCDF 4 file"
 NETCDF_MEDIA_TYPE = "application/netcdf"
 NETCDF_ROLES = ["data", "source"]

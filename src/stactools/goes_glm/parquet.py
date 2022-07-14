@@ -1,5 +1,6 @@
 import logging
 import os
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 
 from geopandas import GeoDataFrame, GeoSeries
@@ -70,31 +71,61 @@ def create_asset(
         geometries.append(Point(lon, lat))
 
     # fill dict with all data in a columnar way
-    # todo: convert some fields to iso datetimes?
-    data = {
+    table_data = {
         constants.PARQUET_GEOMETRY_COL: GeoSeries(geometries, crs=constants.SOURCE_CRS)
     }
-    table_cols = [
-        # todo: add more details to geometry column
-        {"name": constants.PARQUET_GEOMETRY_COL}
-    ]
+    table_cols = [{"name": constants.PARQUET_GEOMETRY_COL, "type": dataset.featureType}]
     for col in cols:
         if col == "lat" or col == "lon":
             continue
 
         variable = dataset.variables[f"{type}_{col}"]
-        data[col] = variable[...]
-        table_cols.append(
-            {
-                "name": col,
-                "type": str(variable.datatype),
-                "description": variable.getncattr("long_name"),
-            }
-        )
+        attrs = variable.ncattrs()
+        data = variable[...].tolist()
+        table_col = {
+            "name": col,
+            "type": str(variable.datatype),
+        }
+        if "long_name" in attrs:
+            table_col["description"] = variable.getncattr("long_name")
+
+        if "units" in attrs:
+            unit = variable.getncattr("units")
+            if unit == "percent":
+                table_col["unit"] = "%"
+            elif unit not in constants.IGNORED_UNITS:
+                table_col["unit"] = unit
+
+            # Convert offsets into datetimes
+            if unit.startswith("seconds since "):
+                new_col = col.replace("_offset", "")
+                base = datetime.fromisoformat(unit[14:]).replace(tzinfo=timezone.utc)
+
+                new_data: List[datetime] = []
+                for val in data:
+                    delta = timedelta(seconds=val)
+                    new_data.append(base + delta)
+                
+                table_data[new_col] = new_data
+                table_cols.append({
+                    "name": new_col,
+                    "type": "datetime"  # todo: correct data type?
+                })
+
+        table_data[col] = data
+        table_cols.append(table_col)
 
     # Create a geodataframe and store it as geoparquet file
-    dataframe = GeoDataFrame(data)
-    dataframe.to_parquet(file)
+    dataframe = GeoDataFrame(table_data)
+
+    # Convert using private API until the following bug is solved:
+    # https://github.com/geopandas/geopandas/issues/2495
+    # Replace later with somethine like:
+    # dataframe.to_parquet(file, version = "2.6")
+    import geopandas as gp
+    table = gp.io.arrow._geopandas_to_arrow(dataframe)
+    import pyarrow.parquet as pq
+    pq.write_table(table, file, version="2.6")
 
     # Create asset dict
     return create_asset_metadata(title, file, table_cols, count)

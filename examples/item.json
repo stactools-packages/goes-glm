@@ -78,7 +78,8 @@
       "table:primary_geometry": "geometry",
       "table:columns": [
         {
-          "name": "geometry"
+          "name": "geometry",
+          "type": "point"
         },
         {
           "name": "id",
@@ -86,14 +87,20 @@
           "description": "product-unique lightning event identifier"
         },
         {
+          "name": "time",
+          "type": "datetime"
+        },
+        {
           "name": "time_offset",
           "type": "int16",
-          "description": "GLM L2+ Lightning Detection: event's time of occurrence"
+          "description": "GLM L2+ Lightning Detection: event's time of occurrence",
+          "unit": "seconds since 2020-12-31 23:59:40.000"
         },
         {
           "name": "energy",
           "type": "int16",
-          "description": "GLM L2+ Lightning Detection: event radiant energy"
+          "description": "GLM L2+ Lightning Detection: event radiant energy",
+          "unit": "J"
         },
         {
           "name": "parent_group_id",
@@ -114,7 +121,8 @@
       "table:primary_geometry": "geometry",
       "table:columns": [
         {
-          "name": "geometry"
+          "name": "geometry",
+          "type": "point"
         },
         {
           "name": "id",
@@ -122,34 +130,56 @@
           "description": "product-unique lightning flash identifier"
         },
         {
+          "name": "time_of_first_event",
+          "type": "datetime"
+        },
+        {
           "name": "time_offset_of_first_event",
           "type": "int16",
-          "description": "GLM L2+ Lightning Detection: time of occurrence of first constituent event in flash"
+          "description": "GLM L2+ Lightning Detection: time of occurrence of first constituent event in flash",
+          "unit": "seconds since 2020-12-31 23:59:40.000"
+        },
+        {
+          "name": "time_of_last_event",
+          "type": "datetime"
         },
         {
           "name": "time_offset_of_last_event",
           "type": "int16",
-          "description": "GLM L2+ Lightning Detection: time of occurrence of last constituent event in flash"
+          "description": "GLM L2+ Lightning Detection: time of occurrence of last constituent event in flash",
+          "unit": "seconds since 2020-12-31 23:59:40.000"
+        },
+        {
+          "name": "frame_time_of_first_event",
+          "type": "datetime"
         },
         {
           "name": "frame_time_offset_of_first_event",
           "type": "int16",
-          "description": "GLM L2+ Lightning Detection: time of occurrence of first constituent event in flash"
+          "description": "GLM L2+ Lightning Detection: time of occurrence of first constituent event in flash",
+          "unit": "seconds since 2020-12-31 23:59:40.000"
+        },
+        {
+          "name": "frame_time_of_last_event",
+          "type": "datetime"
         },
         {
           "name": "frame_time_offset_of_last_event",
           "type": "int16",
-          "description": "GLM L2+ Lightning Detection: time of occurrence of last constituent event in flash"
+          "description": "GLM L2+ Lightning Detection: time of occurrence of last constituent event in flash",
+          "unit": "seconds since 2020-12-31 23:59:40.000"
         },
         {
           "name": "area",
           "type": "int16",
-          "description": "GLM L2+ Lightning Detection: flash area coverage (pixels containing at least one constituent event only)"
+          "description": "GLM L2+ Lightning Detection: flash area coverage (pixels containing at least one constituent event only)",
+          "unit": "m2"
         },
         {
           "name": "energy",
           "type": "int16",
-          "description": "GLM L2+ Lightning Detection: flash radiant energy"
+          "description": "GLM L2+ Lightning Detection: flash radiant energy",
+          "unit": "J"
         },
         {
           "name": "quality_flag",
@@ -170,7 +200,8 @@
       "table:primary_geometry": "geometry",
       "table:columns": [
         {
-          "name": "geometry"
+          "name": "geometry",
+          "type": "point"
         },
         {
           "name": "id",
@@ -178,24 +209,36 @@
           "description": "product-unique lightning group identifier"
         },
         {
+          "name": "time",
+          "type": "datetime"
+        },
+        {
           "name": "time_offset",
           "type": "int16",
-          "description": "GLM L2+ Lightning Detection: mean time of group's constituent events' times of occurrence"
+          "description": "GLM L2+ Lightning Detection: mean time of group's constituent events' times of occurrence",
+          "unit": "seconds since 2020-12-31 23:59:40.000"
+        },
+        {
+          "name": "frame_time",
+          "type": "datetime"
         },
         {
           "name": "frame_time_offset",
           "type": "int16",
-          "description": "GLM L2+ Lightning Detection: mean time of group's constituent events' times of occurrence"
+          "description": "GLM L2+ Lightning Detection: mean time of group's constituent events' times of occurrence",
+          "unit": "seconds since 2020-12-31 23:59:40.000"
         },
         {
           "name": "area",
           "type": "int16",
-          "description": "GLM L2+ Lightning Detection: group area coverage (pixels containing at least one constituent event only)"
+          "description": "GLM L2+ Lightning Detection: group area coverage (pixels containing at least one constituent event only)",
+          "unit": "m2"
         },
         {
           "name": "energy",
           "type": "int16",
-          "description": "GLM L2+ Lightning Detection: group radiant energy"
+          "description": "GLM L2+ Lightning Detection: group radiant energy",
+          "unit": "J"
         },
         {
           "name": "quality_flag",

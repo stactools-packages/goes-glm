@@ -47,9 +47,7 @@ def to_cube_variables(dataset: Dataset) -> Dict[str, Any]:
             unit = var.getncattr("units")
             if unit == "percent":
                 stac_var["unit"] = "%"
-            elif unit == "percent":
-                stac_var["unit"] = "%"
-            elif unit != "1" and unit != "count":
+            elif unit not in constants.IGNORED_UNITS:
                 stac_var["unit"] = unit
 
         # not defined in the datacube extension, but might be useful
