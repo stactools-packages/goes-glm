@@ -75,7 +75,10 @@ def create_asset(
     data = {
         constants.PARQUET_GEOMETRY_COL: GeoSeries(geometries, crs=constants.SOURCE_CRS)
     }
-    table_cols = [{"name": constants.PARQUET_GEOMETRY_COL}]
+    table_cols = [
+        # todo: add more details to geometry column
+        {"name": constants.PARQUET_GEOMETRY_COL}
+    ]
     for col in cols:
         if col == "lat" or col == "lon":
             continue

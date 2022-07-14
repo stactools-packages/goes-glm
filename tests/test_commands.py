@@ -20,7 +20,9 @@ class CommandsTest(CliTestCase):
             # Example:
             destination = os.path.join(tmp_dir, "collection.json")
 
-            result = self.run_command(f"goes-glm create-collection {destination}")
+            result = self.run_command(
+                f"goes-glm create-collection {destination} --id=glm --license=license.txt"
+            )
 
             self.assertEqual(result.exit_code, 0, msg="\n{}".format(result.output))
 
@@ -28,17 +30,19 @@ class CommandsTest(CliTestCase):
             self.assertEqual(len(jsons), 1)
 
             collection = pystac.read_file(destination)
-            self.assertEqual(collection.id, "my-collection-id")
+            self.assertEqual(collection.id, "glm")
             # self.assertEqual(item.other_attr...
 
-            collection.validate()
+            # can't validate yet due to https://github.com/stac-utils/pystac/issues/845
+            # collection.validate()
 
     def test_create_item(self) -> None:
         with TemporaryDirectory() as tmp_dir:
             # Run your custom create-item command and validate
 
             # Example:
-            infile = "/path/to/asset.tif"
+            id = "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200_c20221542100217"
+            infile = f"tests/data-files/{id}.nc"
             destination = os.path.join(tmp_dir, "item.json")
             result = self.run_command(f"goes-glm create-item {infile} {destination}")
             self.assertEqual(result.exit_code, 0, msg="\n{}".format(result.output))
@@ -47,7 +51,8 @@ class CommandsTest(CliTestCase):
             self.assertEqual(len(jsons), 1)
 
             item = pystac.read_file(destination)
-            self.assertEqual(item.id, "my-item-id")
+            self.assertEqual(item.id, id)
             # self.assertEqual(item.other_attr...
 
-            item.validate()
+            # can't validate yet due to https://github.com/stac-utils/pystac/issues/845
+            # item.validate()

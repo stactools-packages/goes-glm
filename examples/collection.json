@@ -23,6 +23,12 @@
     },
     {
       "rel": "about",
+      "href": "https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ncdc:C01527",
+      "type": "text/html",
+      "title": "Product Landing Page"
+    },
+    {
+      "rel": "about",
       "href": "https://www.goes-r.gov/users/docs/PUG-main-vol1.pdf",
       "type": "application/pdf",
       "title": "Product Definition and Users' Guide (PUG) Vol.1 Main"
@@ -45,6 +51,7 @@
   ],
   "stac_extensions": [
     "https://stac-extensions.github.io/goes/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/processing/v1.1.0/schema.json",
     "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
     "https://stac-extensions.github.io/table/v1.2.0/schema.json",
     "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json"
@@ -80,7 +87,7 @@
       "table:primary_geometry": "geometry"
     },
     "netcdf": {
-      "title": "Original netCDF file",
+      "title": "Original netCDF 4 file",
       "type": "application/netcdf",
       "roles": [
         "data",
@@ -95,7 +102,7 @@
         [
           -141.56,
           -66.56,
-          -203.56,
+          -8.44,
           66.56
         ]
       ]
@@ -154,6 +161,13 @@
     ],
     "processing:level": [
       "L2"
+    ],
+    "goes:image-type": [
+      "FULL DISK"
+    ],
+    "goes:orbital-slot": [
+      "West",
+      "East"
     ]
   }
 }

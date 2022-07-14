@@ -32,6 +32,12 @@ PROVIDERS = [
     ),
 ]
 
+LINK_LANDING_PAGE = Link(
+    target="https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ncdc:C01527",
+    media_type="text/html",
+    title="Product Landing Page",
+    rel="about",
+)
 LINK_USER_GUIDE_MAIN = Link(
     target="https://www.goes-r.gov/users/docs/PUG-main-vol1.pdf",
     media_type="application/pdf",
@@ -68,12 +74,18 @@ PLATFORM_S = "GOES-17"
 PLATFORM_T = "GOES-18"
 PLATFORMS = [PLATFORM_R, PLATFORM_S]  # We can add PLATFORM_T at some point
 INSTRUMENTS = ["FM1", "FM2"]  # We can add FM3 for GOES-18 at some point
+GOES_IMAGE_TYPE = "FULL DISK"
 
 
 class Platforms(str, enum.Enum):
     G16 = PLATFORM_R
     G17 = PLATFORM_S
     G18 = PLATFORM_T
+
+
+class OrbitalSlot(str, enum.Enum):
+    GOES_West = "West"
+    GOES_East = "East"
 
 
 # Assets
@@ -87,7 +99,7 @@ PARQUET_MEDIA_TYPE = "application/x-parquet"
 PARQUET_ROLES = ["data", "cloud-optimized"]
 PARQUET_GEOMETRY_COL = "geometry"
 
-NETCDF_TITLE = "Original netCDF file"
+NETCDF_TITLE = "Original netCDF 4 file"
 NETCDF_MEDIA_TYPE = "application/netcdf"
 NETCDF_ROLES = ["data", "source"]
 NETCDF_KEY = "netcdf"
@@ -97,4 +109,4 @@ SOURCE_CRS = "EPSG:4326"
 TARGET_CRS = 4326
 
 # Bounding box
-BBOXES = [[-141.56, -66.56, -203.56, 66.56]]
+BBOXES = [[-141.56, -66.56, -8.44, 66.56]]

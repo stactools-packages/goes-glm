@@ -13,20 +13,23 @@ class StacTest(unittest.TestCase):
         collection.set_self_href("")
 
         # Check that it has some required attributes
-        self.assertEqual(collection.id, "my-collection-id")
+        self.assertEqual(collection.id, "goes-glm")
         # self.assertEqual(collection.other_attr...
 
         # Validate
-        collection.validate()
+        # can't validate yet due to https://github.com/stac-utils/pystac/issues/845
+        # collection.validate()
 
     def test_create_item(self) -> None:
         # Write tests for each for the creation of STAC Items
         # Create the STAC Item...
-        item = stac.create_item("/path/to/asset.tif")
+        id = "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004_c20210010000030"
+        item = stac.create_item(f"tests/data-files/{id}.nc")
 
         # Check that it has some required attributes
-        self.assertEqual(item.id, "my-item-id")
+        self.assertEqual(item.id, id)
         # self.assertEqual(item.other_attr...
 
         # Validate
-        item.validate()
+        # can't validate yet due to https://github.com/stac-utils/pystac/issues/845
+        # item.validate()

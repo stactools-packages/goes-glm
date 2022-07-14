@@ -88,12 +88,17 @@ def create_collection(
             "instruments": constants.INSTRUMENTS,
             "gsd": [constants.RESOLUTION],
             "processing:level": [constants.PROCESSING_LEVEL],
-            # todo: add more?
+            "goes:image-type": [constants.GOES_IMAGE_TYPE],
+            "goes:orbital-slot": [e.value for e in constants.OrbitalSlot],
         }
     )
 
     collection = Collection(
-        stac_extensions=[constants.GOES_EXTENSION],
+        stac_extensions=[
+            # todo: add extension again once released
+            # constants.GOES_EXTENSION,
+            constants.PROCESSING_EXTENSION,
+        ],
         id=id,
         title=constants.TITLE,
         description=constants.DESCRIPTION,
@@ -106,6 +111,7 @@ def create_collection(
     )
 
     collection.add_link(Link(target=license, rel=RelType.LICENSE, title="License"))
+    collection.add_link(constants.LINK_LANDING_PAGE)
     collection.add_link(constants.LINK_USER_GUIDE_MAIN)
     collection.add_link(constants.LINK_USER_GUIDE_L2_PRODUCTS)
 
@@ -132,7 +138,6 @@ def create_collection(
     item_assets = {}
 
     if not nogeoparquet:
-        # todo: use table extension instead of directly generating JSON from dicts?
         TableExtension.ext(collection, add_if_missing=True)
         item_assets[constants.PARQUET_KEY_EVENTS] = AssetDefinition(
             parquet.create_asset_metadata(constants.PARQUET_TITLE_EVENTS)
@@ -180,6 +185,9 @@ def create_item(
     dataset = Dataset(asset_href, "r", format="NETCDF4")
 
     id = dataset.dataset_name.replace(".nc", "")
+    sys_env = id[:2]
+    if sys_env != "OR":
+        logger.warning("You are ingesting test data.")
 
     bbox = constants.BBOXES[0]
     geometry = bbox_to_polygon(bbox)  # todo: check whether this makes sense
@@ -194,18 +202,26 @@ def create_item(
         "gsd": constants.RESOLUTION,
         "processing:level": constants.PROCESSING_LEVEL,
         "processing:facility": dataset.production_site,
-        "goes:orbital-slot": dataset.orbital_slot.replace("GOES-", ""),
-    }  # todo
+        "goes:orbital-slot": constants.OrbitalSlot[
+            dataset.orbital_slot.replace("-", "_")
+        ],
+        "goes:system-environment": sys_env,
+        "goes:image-type": constants.GOES_IMAGE_TYPE,
+    }
 
     item = Item(
-        stac_extensions=[constants.GOES_EXTENSION, constants.PROCESSING_EXTENSION],
+        stac_extensions=[
+            # todo: add extension again once released
+            # constants.GOES_EXTENSION,
+            constants.PROCESSING_EXTENSION,
+        ],
         id=id,
         properties=properties,
         geometry=geometry,
         bbox=bbox,
-        datetime=isoparse(
-            dataset.time_coverage_start
-        ),  # todo: compute central datetime?
+        datetime=center_datetime(
+            dataset.time_coverage_start, dataset.time_coverage_end
+        ),
         collection=collection,
     )
 
@@ -219,11 +235,11 @@ def create_item(
             asset = Asset.from_dict(asset_dict)
             item.add_asset(key, asset)
 
-            # todo: use table extension instead of directly generating JSON from dicts?
             TableExtension.ext(asset, add_if_missing=True)
 
     if not nonetcdf:
         asset_dict = create_netcdf_asset_metadata(asset_href)
+        asset_dict["created"] = dataset.date_created
         asset = Asset.from_dict(asset_dict)
         item.add_asset(constants.NETCDF_KEY, asset)
 
@@ -253,3 +269,9 @@ def bbox_to_polygon(b: List[float]) -> Dict[str, Any]:
             [[b[0], b[3]], [b[2], b[3]], [b[2], b[1]], [b[0], b[1]], [b[0], b[3]]]
         ],
     }
+
+
+def center_datetime(start: str, end: str) -> datetime:
+    a: datetime = isoparse(start)
+    b: datetime = isoparse(end)
+    return a + (b - a) / 2

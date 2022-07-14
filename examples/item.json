@@ -14,10 +14,11 @@
     "gsd": 8000,
     "processing:level": "L2",
     "processing:facility": "WCDAS",
-    "goes:system-environment": "OR",
     "goes:orbital-slot": "East",
+    "goes:system-environment": "OR",
+    "goes:image-type": "FULL DISK",
     "proj:epsg": 4326,
-    "datetime": "2020-12-31T23:59:50Z"
+    "datetime": "2020-12-31T23:59:50.200000Z"
   },
   "geometry": {
     "type": "Polygon",
@@ -28,11 +29,11 @@
           66.56
         ],
         [
-          -203.56,
+          -8.44,
           66.56
         ],
         [
-          -203.56,
+          -8.44,
           -66.56
         ],
         [
@@ -201,18 +202,18 @@
     "netcdf": {
       "href": "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004_c20210010000030.nc",
       "type": "application/netcdf",
-      "title": "Original netCDF file",
+      "title": "Original netCDF 4 file",
+      "created": "2021-01-01T00:00:03.0Z",
       "roles": [
         "data",
         "source"
-      ],
-      "created": "2021-01-01T00:00:03.0Z"
+      ]
     }
   },
   "bbox": [
     -141.56,
     -66.56,
-    -203.56,
+    -8.44,
     66.56
   ],
   "stac_extensions": [
