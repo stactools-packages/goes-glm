@@ -251,8 +251,9 @@
         "number_of_field_of_view_bounds": {
           "type": "number_of_field_of_view_bounds",
           "extent": [
-	  
-	  ]
+            -141.55999755859375,
+            66.55999755859375
+          ]
         },
         "number_of_wavelength_bounds": {
           "type": "number_of_wavelength_bounds",
