@@ -15,7 +15,9 @@
   - [processing](https://github.com/stac-extensions/processing/)
   - [proj](https://github.com/stac-extensions/projection/)
   - [table](https://github.com/stac-extensions/table/) (for geoparquet only)
-- Extra fields have been defined in the [GOES extension](https://github.com/stac-extensions/goes/) so that they can be shared across multiple GOES products.
+- Extra fields:
+  - Prefix `goes:`: They have been defined in the [GOES extension](https://github.com/stac-extensions/goes/) so that they can be shared across multiple GOES products.
+  - Prefix `goes-glm:`: Variables with valid scalar values / without dimensions are added to the Item properties. The variable name is used as the property key after the prefix, e.g. `goes-glm:event_count`.
 
 A stactools package for the Geostationary Lightning Mapper (GLM) dataset, which is on the GOES-16/R and GOES-17/S satellites.
 GLM detects all forms of lightning during both day and night, continuously, with a high spatial resolution and detection efficiency.

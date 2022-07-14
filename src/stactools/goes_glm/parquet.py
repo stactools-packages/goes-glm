@@ -2,7 +2,6 @@ import logging
 import os
 from typing import Any, Dict, List, Optional
 
-import numpy as np
 from geopandas import GeoDataFrame, GeoSeries
 from netCDF4 import Dataset
 from shapely.geometry import Point
@@ -84,7 +83,7 @@ def create_asset(
             continue
 
         variable = dataset.variables[f"{type}_{col}"]
-        data[col] = np.asarray(variable)
+        data[col] = variable[...]
         table_cols.append(
             {
                 "name": col,

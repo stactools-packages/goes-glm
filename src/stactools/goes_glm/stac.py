@@ -3,6 +3,7 @@ import os
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
+import numpy as np
 from dateutil.parser import isoparse
 from netCDF4 import Dataset
 from pystac import (
@@ -18,8 +19,10 @@ from pystac import (
     Summaries,
     TemporalExtent,
 )
-
-# from pystac.extensions.datacube import DatacubeExtension
+from pystac.extensions.datacube import (  # AdditionalDimension,; Variable,
+    DatacubeExtension,
+    VariableType,
+)
 from pystac.extensions.item_assets import AssetDefinition, ItemAssetsExtension
 from pystac.extensions.projection import ProjectionExtension
 from pystac.extensions.scientific import ScientificExtension
@@ -209,6 +212,14 @@ def create_item(
         "goes:image-type": constants.GOES_IMAGE_TYPE,
     }
 
+    for key, var in dataset.variables.items():
+        if len(var.dimensions) != 0:
+            continue
+
+        ma = var[...]
+        if ma.count() > 0:
+            properties[f"goes-glm:{var.name}"] = ma.tolist()
+
     item = Item(
         stac_extensions=[
             # todo: add extension again once released
@@ -239,14 +250,66 @@ def create_item(
 
     if not nonetcdf:
         asset_dict = create_netcdf_asset_metadata(asset_href)
+
         asset_dict["created"] = dataset.date_created
+
+        asset_dict["cube:dimensions"] = {}
+        for key, dim in dataset.dimensions.items():
+            stac_dim = {"type": dim.name, "extent": [None, None]}
+            if not dim.isunlimited():
+                dim_vars = [
+                    var
+                    for var in dataset.variables.values()
+                    if dim.name in var.dimensions
+                ]
+                if len(dim_vars) == 1:
+                    data = np.asarray(dim_vars).tolist()
+                    stac_dim["extent"] = data[0]
+                elif len(dim_vars) > 1:
+                    flat = np.asarray(dim_vars).flatten().tolist()
+                    stac_dim["extent"] = [min(flat), max(flat)]
+
+            asset_dict["cube:dimensions"][dim.name] = stac_dim
+
+        asset_dict["cube:variables"] = {}
+        for key, var in dataset.variables.items():
+            attrs = var.ncattrs()
+            stac_var = {
+                "dimensions": var.dimensions,
+                "type": VariableType.DATA
+                if "standard_name" in attrs and len(var.dimensions) > 0
+                else VariableType.AUXILIARY,
+            }
+            if "long_name" in attrs:
+
+                stac_var["description"] = var.getncattr("long_name").replace(
+                    "GLM L2+ Lightning Detection: ", ""
+                )
+            if "units" in attrs:
+                unit = var.getncattr("units")
+                if unit == "percent":
+                    stac_var["unit"] = "%"
+                elif unit == "percent":
+                    stac_var["unit"] = "%"
+                elif unit != "1" and unit != "count":
+                    stac_var["unit"] = unit
+            # not defined in the datacube extension, but might be useful
+            if "axis" in attrs:
+                stac_var["axis"] = var.getncattr("axis")
+            asset_dict["cube:variables"][var.name] = stac_var
+
         asset = Asset.from_dict(asset_dict)
         item.add_asset(constants.NETCDF_KEY, asset)
 
-        # todo
-        # dc = DatacubeExtension.ext(asset, add_if_missing=True)
-        # dataset.dimensions
-        # dataset.variables
+        DatacubeExtension.ext(asset, add_if_missing=True)
+
+        """
+        dc = DatacubeExtension.ext(asset, add_if_missing=True)
+        for key, dim in dataset.dimensions.items():
+            dc.dimensions[dim.name] = AdditionalDimension(stac_dim)
+        for key, var in dataset.variables.items():
+            dc.variables[var.name] = Variable(stac_var)
+        """
 
     return item
 
