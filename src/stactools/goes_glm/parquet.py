@@ -105,12 +105,11 @@ def create_asset(
                 for val in data:
                     delta = timedelta(seconds=val)
                     new_data.append(base + delta)
-                
+
                 table_data[new_col] = new_data
-                table_cols.append({
-                    "name": new_col,
-                    "type": "datetime"  # todo: correct data type?
-                })
+                table_cols.append(
+                    {"name": new_col, "type": "datetime"}  # todo: correct data type?
+                )
 
         table_data[col] = data
         table_cols.append(table_col)
@@ -123,8 +122,10 @@ def create_asset(
     # Replace later with somethine like:
     # dataframe.to_parquet(file, version = "2.6")
     import geopandas as gp
+
     table = gp.io.arrow._geopandas_to_arrow(dataframe)
     import pyarrow.parquet as pq
+
     pq.write_table(table, file, version="2.6")
 
     # Create asset dict
