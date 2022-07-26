@@ -18,7 +18,7 @@ class StacTest(unittest.TestCase):
 
         # Validate
         # can't validate yet due to https://github.com/stac-utils/pystac/issues/845
-        # collection.validate()
+        collection.validate()
 
     def test_create_item(self) -> None:
         # Write tests for each for the creation of STAC Items
@@ -32,4 +32,4 @@ class StacTest(unittest.TestCase):
 
         # Validate
         # can't validate yet due to https://github.com/stac-utils/pystac/issues/845
-        # item.validate()
+        item.validate()

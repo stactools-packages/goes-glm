@@ -18,7 +18,6 @@ from pystac import (
     Summaries,
     TemporalExtent,
 )
-from pystac.extensions.datacube import DatacubeExtension
 from pystac.extensions.item_assets import AssetDefinition, ItemAssetsExtension
 from pystac.extensions.projection import ProjectionExtension
 from pystac.extensions.scientific import ScientificExtension
@@ -244,13 +243,13 @@ def create_item(
             TableExtension.ext(asset, add_if_missing=True)
 
     if not nonetcdf:
+        item.stac_extensions.append(constants.DATACUBE_EXTENSION)
         asset_dict = netcdf.create_asset(asset_href)
         asset_dict["created"] = dataset.date_created
         asset_dict["cube:dimensions"] = netcdf.to_cube_dimensions(dataset)
         asset_dict["cube:variables"] = netcdf.to_cube_variables(dataset)
         asset = Asset.from_dict(asset_dict)
         item.add_asset(constants.NETCDF_KEY, asset)
-        DatacubeExtension.ext(asset, add_if_missing=True)
 
     return item
 

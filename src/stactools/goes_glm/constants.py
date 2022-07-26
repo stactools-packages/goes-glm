@@ -54,6 +54,7 @@ LINK_USER_GUIDE_L2_PRODUCTS = Link(
 # Extensions
 GOES_EXTENSION = "https://stac-extensions.github.io/goes/v1.0.0/schema.json"
 PROCESSING_EXTENSION = "https://stac-extensions.github.io/processing/v1.1.0/schema.json"
+DATACUBE_EXTENSION = "https://stac-extensions.github.io/datacube/v2.1.0/schema.json"
 
 # Scientific
 DOI = "10.7289/V5KH0KK6"
