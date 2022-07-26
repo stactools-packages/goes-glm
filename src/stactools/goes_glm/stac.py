@@ -255,6 +255,9 @@ def create_item(
 
 
 def bbox_to_polygon(b: List[float]) -> Dict[str, Any]:
+    """
+    Converts a STAC bounding box to a GeoJSON polygon.
+    """
     return {
         "type": "Polygon",
         "coordinates": [
@@ -264,6 +267,16 @@ def bbox_to_polygon(b: List[float]) -> Dict[str, Any]:
 
 
 def center_datetime(start: str, end: str) -> datetime:
+    """
+    Takes the start and end datetime and computes the central datetime.
+
+    Args:
+        start (str): ISO 8601 compliant date-time (as string)
+        end (str): ISO 8601 compliant date-time (as string)
+
+    Returns:
+        datetime: ISO 8601 compliant date-time (as datetime)
+    """
     a: datetime = isoparse(start)
     b: datetime = isoparse(end)
     return a + (b - a) / 2

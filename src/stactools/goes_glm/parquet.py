@@ -13,6 +13,19 @@ logger = logging.getLogger(__name__)
 
 
 def convert(dataset: Dataset, dest_folder: str) -> Dict[str, Dict[str, Any]]:
+    """
+    Converts a netCDF dataset to three geoparquet files (for events, flashes
+    and groups) in the given folder.
+    Returns a dict containing the three STAC Asset Objects for the geoparquet
+    files.
+
+    Args:
+        dataset (Dataset): A netCDF4 Dataset
+        dest_folder (str): The destination folder for the geoparquet files
+
+    Returns:
+        dict: Asset Objects
+    """
     assets: Dict[str, Dict[str, Any]] = {}
     assets[constants.PARQUET_KEY_EVENTS] = create_event(dataset, dest_folder)
     assets[constants.PARQUET_KEY_FLASHES] = create_flashes(dataset, dest_folder)
@@ -21,12 +34,30 @@ def convert(dataset: Dataset, dest_folder: str) -> Dict[str, Dict[str, Any]]:
 
 
 def create_event(dataset: Dataset, dest_folder: str) -> Dict[str, Any]:
+    """
+    Creates geoparquet file from a netCDF Dataset for the events.
+
+    Args:
+        dataset (Dataset): A netCDF4 Dataset
+
+    Returns:
+        dict: Asset Object for the geoparquet file
+    """
     file = os.path.join(dest_folder, "events.parquet")
     cols = ["lat", "lon", "id", "time_offset", "energy", "parent_group_id"]
     return create_asset(dataset, file, "event", cols, constants.PARQUET_TITLE_EVENTS)
 
 
 def create_flashes(dataset: Dataset, dest_folder: str) -> Dict[str, Any]:
+    """
+    Creates geoparquet file from a netCDF Dataset for the flashes.
+
+    Args:
+        dataset (Dataset): A netCDF4 Dataset
+
+    Returns:
+        dict: Asset Object for the geoparquet file
+    """
     file = os.path.join(dest_folder, "flashes.parquet")
     cols = [
         "lat",
@@ -44,6 +75,15 @@ def create_flashes(dataset: Dataset, dest_folder: str) -> Dict[str, Any]:
 
 
 def create_groups(dataset: Dataset, dest_folder: str) -> Dict[str, Any]:
+    """
+    Creates geoparquet file from a netCDF Dataset for the groups.
+
+    Args:
+        dataset (Dataset): A netCDF4 Dataset
+
+    Returns:
+        dict: Asset Object for the geoparquet file
+    """
     file = os.path.join(dest_folder, "groups.parquet")
     cols = [
         "lat",
@@ -62,6 +102,23 @@ def create_groups(dataset: Dataset, dest_folder: str) -> Dict[str, Any]:
 def create_asset(
     dataset: Dataset, file: str, type: str, cols: List[str], title: str
 ) -> Dict[str, Any]:
+    """
+    Creates an asset object for a netCDF Dataset with some additional properties.
+
+    The type is the prefix of the columns in the netCDF file and will be prefixed
+    to the cols (with a underscore in-between) when reading the netCDF4 dataset.
+    The geoparquet file will use the cols, but without the prefix.
+
+    Args:
+        dataset (Dataset): A netCDF4 Dataset
+        file (str): The target file path
+        type (str): The group of data to write (one of: flash, event or group)
+        cols (List[str]): A list of columns to consider
+        title (str): A title for the asset
+
+    Returns:
+        dict: Asset Object for the geoparquet file
+    """
     # create a list of points
     geometries = []
     count = dataset.variables[f"{type}_count"][0]
@@ -138,6 +195,22 @@ def create_asset_metadata(
     cols: List[Dict[str, Any]] = [],
     count: int = -1,
 ) -> Dict[str, Any]:
+    """
+    Creates a basic geoparquet asset dict with shared core properties (title,
+    type, roles), properties for the table extension  and optionally an href.
+    An href should be given for normal assets, but can be None for Item Asset
+    Definitions.
+
+    Args:
+        title (str): A title for the asset
+        href (str): The URL to the asset (optional)
+        cols (List[Dict[str, Any]]): A list of columns (optional;
+            compliant to table:columns)
+        count: The number of rows in the asset (optional)
+
+    Returns:
+        dict: Basic Asset object
+    """
     asset: Dict[str, Any] = {
         "title": title,
         "type": constants.PARQUET_MEDIA_TYPE,

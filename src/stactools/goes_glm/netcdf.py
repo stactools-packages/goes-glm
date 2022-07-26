@@ -8,6 +8,15 @@ from . import constants
 
 
 def to_cube_dimensions(dataset: Dataset) -> Dict[str, Any]:
+    """
+    Creates the cube:dimensions dict for a netCDF dataset.
+
+    Args:
+        dataset (Dataset): A netCDF4 Dataset
+
+    Returns:
+        dict: Dimensions Object
+    """
     cube_dims = {}
     for key, dim in dataset.dimensions.items():
         stac_dim = {"type": dim.name, "extent": [None, None]}
@@ -28,6 +37,15 @@ def to_cube_dimensions(dataset: Dataset) -> Dict[str, Any]:
 
 
 def to_cube_variables(dataset: Dataset) -> Dict[str, Any]:
+    """
+    Creates the cube:variables dict for a netCDF dataset.
+
+    Args:
+        dataset (Dataset): A netCDF4 Dataset
+
+    Returns:
+        dict: Variables Object
+    """
     cube_vars = {}
     for key, var in dataset.variables.items():
         attrs = var.ncattrs()
@@ -59,6 +77,17 @@ def to_cube_variables(dataset: Dataset) -> Dict[str, Any]:
 
 
 def create_asset(href: Optional[str] = None) -> Dict[str, Any]:
+    """
+    Creates a basic netCDF asset dict with shared properties (title, type, roles)
+    and optionally an href. An href should be given for normal assets, but can
+    be None for Item Asset Definitionss
+
+    Args:
+        href (str): The URL to an asset (optional)
+
+    Returns:
+        dict: Basic Asset object
+    """
     asset: Dict[str, Any] = {
         "title": constants.NETCDF_TITLE,
         "type": constants.NETCDF_MEDIA_TYPE,
