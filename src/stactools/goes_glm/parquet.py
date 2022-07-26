@@ -141,7 +141,7 @@ def create_asset(
         data = variable[...].tolist()
         table_col = {
             "name": col,
-            "type": str(variable.datatype),
+            "type": str(variable.datatype),  # todo: check data type #11
         }
         if "long_name" in attrs:
             table_col["description"] = variable.getncattr("long_name")
@@ -165,7 +165,11 @@ def create_asset(
 
                 table_data[new_col] = new_data
                 table_cols.append(
-                    {"name": new_col, "type": "datetime"}  # todo: correct data type?
+                    {
+                        "name": new_col,
+                        # todo: correct data type? #11
+                        "type": "datetime",
+                    }
                 )
 
         table_data[col] = data

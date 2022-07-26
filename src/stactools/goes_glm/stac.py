@@ -93,7 +93,7 @@ def create_collection(
 
     collection = Collection(
         stac_extensions=[
-            # todo: add extension again once released
+            # todo: add extension again once released #12
             # constants.GOES_EXTENSION,
             constants.PROCESSING_EXTENSION,
         ],
@@ -188,7 +188,7 @@ def create_item(
         logger.warning("You are ingesting test data.")
 
     bbox = constants.BBOXES[0]
-    geometry = bbox_to_polygon(bbox)  # todo: check whether this makes sense
+    geometry = bbox_to_polygon(bbox)  # todo: check whether this makes sense #9 #14
 
     properties = {
         "start_datetime": dataset.time_coverage_start,
@@ -217,7 +217,7 @@ def create_item(
 
     item = Item(
         stac_extensions=[
-            # todo: add extension again once released
+            # todo: add extension again once released #12
             # constants.GOES_EXTENSION,
             constants.PROCESSING_EXTENSION,
         ],
@@ -243,6 +243,7 @@ def create_item(
             TableExtension.ext(asset, add_if_missing=True)
 
     if not nonetcdf:
+        # todo: replace with DataCube extension from PySTAC #16
         item.stac_extensions.append(constants.DATACUBE_EXTENSION)
         asset_dict = netcdf.create_asset(asset_href)
         asset_dict["created"] = dataset.date_created
