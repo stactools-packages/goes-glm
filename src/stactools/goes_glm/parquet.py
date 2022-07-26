@@ -173,17 +173,7 @@ def create_asset(
 
     # Create a geodataframe and store it as geoparquet file
     dataframe = GeoDataFrame(table_data)
-
-    # Convert using private API until the following bug is solved:
-    # https://github.com/geopandas/geopandas/issues/2495
-    # Replace later with somethine like:
-    # dataframe.to_parquet(file, version = "2.6")
-    import geopandas as gp
-
-    table = gp.io.arrow._geopandas_to_arrow(dataframe)
-    import pyarrow.parquet as pq
-
-    pq.write_table(table, file, version="2.6")
+    dataframe.to_parquet(file, version="2.6")
 
     # Create asset dict
     return create_asset_metadata(title, file, table_cols, count)
