@@ -11,6 +11,12 @@
       "title": "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004_c20210010000030"
     },
     {
+      "rel": "item",
+      "href": "./item2.json",
+      "type": "application/geo+json",
+      "title": "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200_c20221542100217"
+    },
+    {
       "rel": "root",
       "href": "./collection.json",
       "type": "application/json",

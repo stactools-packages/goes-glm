@@ -11,7 +11,7 @@
   - <https://ghrc.nsstc.nasa.gov/lightning/overview_glm.html>
 - STAC extensions used:
   - [datacube](https://github.com/stac-extensions/datacube/) (for netCDF only)
-  - [GOES](https://github.com/stac-extensions/goes/)
+  - [GOES](https://github.com/stac-extensions/goes/) (unreleased)
   - [processing](https://github.com/stac-extensions/processing/)
   - [proj](https://github.com/stac-extensions/projection/)
   - [table](https://github.com/stac-extensions/table/) (for geoparquet only)
@@ -21,6 +21,7 @@
 
 A stactools package for the Geostationary Lightning Mapper (GLM) dataset, which is on the GOES-16/R and GOES-17/S satellites.
 GLM detects all forms of lightning during both day and night, continuously, with a high spatial resolution and detection efficiency.
+Note: This package doesn't support GOES-18/T yet.
 
 This package can generate STAC files from netCDF files and that either link to the original netCDF files or
 to geoparquet files.
@@ -28,7 +29,8 @@ to geoparquet files.
 ## STAC Examples
 
 - [Collection](examples/collection.json)
-- [Item](examples/item.json)
+- [Item (GOES-16/R)](examples/item.json)
+- [Item (GOES-17/S)](examples/item2.json)
 - [Browse the example in a human-readable form](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/stactools-packages/goes-glm/main/examples/collection.json)
 
 ## Installation
