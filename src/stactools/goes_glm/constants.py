@@ -75,7 +75,6 @@ PLATFORM_S = "GOES-17"
 PLATFORM_T = "GOES-18"
 PLATFORMS = [PLATFORM_R, PLATFORM_S]  # We can add PLATFORM_T at some point
 INSTRUMENTS = ["FM1", "FM2"]  # We can add FM3 for GOES-18 at some point
-GOES_IMAGE_TYPE = "FULL DISK"
 
 
 class Platforms(str, enum.Enum):
@@ -111,5 +110,49 @@ NETCDF_KEY = "netcdf"
 SOURCE_CRS = "EPSG:4326"
 TARGET_CRS = 4326
 
-# Bounding box
-BBOXES = [[-141.56, -66.56, -8.44, 66.56]]
+# Bounding boxes and geometries - note: west crosses the antimeridian!
+ITEM_BBOX_WEST = [156.44, -66.56, -70.44, 66.56]
+ITEM_BBOX_EAST = [-141.56, -66.56, -8.44, 66.56]
+COLLECTION_BBOXES = [
+    # Union
+    [156.44, -66.56, -8.44, 66.56],
+    # Split west into two parts as it crosses the antimeridian
+    [156.44, -66.56, 180.0, 66.56],
+    [-180.0, -66.56, -70.44, 66.56],
+    # East
+    ITEM_BBOX_EAST,
+]
+
+# Split west into two polygons as propsoed by the GeoJSON spec as it crosses the antimeridian
+GEOMETRY_WEST = {
+    "type": "Polygon",
+    "coordinates": [
+        [
+            [156.44, 66.56],
+            [180, 66.56],
+            [180, -66.56],
+            [156.44, -66.56],
+            [156.44, 66.56],
+        ],
+        [
+            [-180, 66.56],
+            [-70.44, 66.56],
+            [-70.44, -66.56],
+            [-180, -66.56],
+            [-180, 66.56],
+        ],
+    ],
+}
+# East
+GEOMETRY_EAST = {
+    "type": "Polygon",
+    "coordinates": [
+        [
+            [-141.56, 66.56],
+            [-8.44, 66.56],
+            [-8.44, -66.56],
+            [-141.56, -66.56],
+            [-141.56, 66.56],
+        ]
+    ],
+}

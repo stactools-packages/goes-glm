@@ -1,7 +1,7 @@
 import logging
 import os
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from typing import Optional
 
 from dateutil.parser import isoparse
 from netCDF4 import Dataset
@@ -58,7 +58,7 @@ def create_collection(
         start_datetime = isoparse(start_time)
 
     extent = Extent(
-        SpatialExtent(constants.BBOXES),
+        SpatialExtent(constants.COLLECTION_BBOXES),
         TemporalExtent([[start_datetime, None]]),
     )
 
@@ -86,7 +86,6 @@ def create_collection(
             "instruments": constants.INSTRUMENTS,
             "gsd": [constants.RESOLUTION],
             "processing:level": [constants.PROCESSING_LEVEL],
-            "goes:image-type": [constants.GOES_IMAGE_TYPE],
             "goes:orbital-slot": [e.value for e in constants.OrbitalSlot],
         }
     )
@@ -187,9 +186,7 @@ def create_item(
     if sys_env != "OR":
         logger.warning("You are ingesting test data.")
 
-    bbox = constants.BBOXES[0]
-    geometry = bbox_to_polygon(bbox)  # todo: check whether this makes sense #9 #14
-
+    slot = constants.OrbitalSlot[dataset.orbital_slot.replace("-", "_")]
     properties = {
         "start_datetime": dataset.time_coverage_start,
         "end_datetime": dataset.time_coverage_end,
@@ -200,19 +197,31 @@ def create_item(
         "gsd": constants.RESOLUTION,
         "processing:level": constants.PROCESSING_LEVEL,
         "processing:facility": dataset.production_site,
-        "goes:orbital-slot": constants.OrbitalSlot[
-            dataset.orbital_slot.replace("-", "_")
-        ],
+        "goes:orbital-slot": slot,
         "goes:system-environment": sys_env,
-        "goes:image-type": constants.GOES_IMAGE_TYPE,
     }
 
+    if slot == constants.OrbitalSlot.GOES_East:
+        bbox = constants.ITEM_BBOX_EAST
+        geometry = constants.GEOMETRY_EAST
+    elif slot == constants.OrbitalSlot.GOES_West:
+        bbox = constants.ITEM_BBOX_WEST
+        geometry = constants.GEOMETRY_WEST
+    else:
+        bbox = None
+        geometry = None
+
+    centroid = {}
     for key, var in dataset.variables.items():
         if len(var.dimensions) != 0:
             continue
 
         ma = var[...]
-        if ma.count() > 0:
+        if var.name == "lat_field_of_view":
+            centroid["lat"] = ma.tolist()
+        elif var.name == "lon_field_of_view":
+            centroid["lon"] = ma.tolist()
+        elif ma.count() > 0:
             properties[f"goes-glm:{var.name}"] = ma.tolist()
 
     item = Item(
@@ -233,6 +242,8 @@ def create_item(
 
     proj = ProjectionExtension.ext(item, add_if_missing=True)
     proj.epsg = constants.TARGET_CRS
+    if len(centroid) == 2:
+        proj.centroid = centroid
 
     if not nogeoparquet:
         target_folder = os.path.dirname(asset_href)
@@ -253,18 +264,6 @@ def create_item(
         item.add_asset(constants.NETCDF_KEY, asset)
 
     return item
-
-
-def bbox_to_polygon(b: List[float]) -> Dict[str, Any]:
-    """
-    Converts a STAC bounding box to a GeoJSON polygon.
-    """
-    return {
-        "type": "Polygon",
-        "coordinates": [
-            [[b[0], b[3]], [b[2], b[3]], [b[2], b[1]], [b[0], b[1]], [b[0], b[3]]]
-        ],
-    }
 
 
 def center_datetime(start: str, end: str) -> datetime:

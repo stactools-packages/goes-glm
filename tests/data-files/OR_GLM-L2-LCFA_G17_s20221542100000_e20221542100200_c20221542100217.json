@@ -16,12 +16,10 @@
     "processing:facility": "WCDAS",
     "goes:orbital-slot": "West",
     "goes:system-environment": "OR",
-    "goes:image-type": "FULL DISK",
     "goes-glm:product_time": 707562000.0,
     "goes-glm:lightning_wavelength": 777.3699951171875,
     "goes-glm:group_time_threshold": 0.0,
     "goes-glm:flash_time_threshold": 3.3299999237060547,
-    "goes-glm:lat_field_of_view": 0.0,
     "goes-glm:event_count": 1229,
     "goes-glm:group_count": 811,
     "goes-glm:flash_count": 117,
@@ -30,9 +28,12 @@
     "goes-glm:nominal_satellite_subpoint_lat": 0.0,
     "goes-glm:nominal_satellite_height": 35786.0234375,
     "goes-glm:nominal_satellite_subpoint_lon": -137.1999969482422,
-    "goes-glm:lon_field_of_view": -137.0,
     "goes-glm:percent_uncorrectable_L0_errors": 0.0,
     "proj:epsg": 4326,
+    "proj:centroid": {
+      "lat": 0.0,
+      "lon": -137.0
+    },
     "datetime": "2022-06-03T21:00:10Z"
   },
   "geometry": {
@@ -40,23 +41,45 @@
     "coordinates": [
       [
         [
-          -141.56,
+          156.44,
           66.56
         ],
         [
-          -8.44,
+          180,
           66.56
         ],
         [
-          -8.44,
+          180,
           -66.56
         ],
         [
-          -141.56,
+          156.44,
           -66.56
         ],
         [
-          -141.56,
+          156.44,
+          66.56
+        ]
+      ],
+      [
+        [
+          -180,
+          66.56
+        ],
+        [
+          -70.44,
+          66.56
+        ],
+        [
+          -70.44,
+          -66.56
+        ],
+        [
+          -180,
+          -66.56
+        ],
+        [
+          -180,
           66.56
         ]
       ]
@@ -656,9 +679,9 @@
     }
   },
   "bbox": [
-    -141.56,
+    156.44,
     -66.56,
-    -8.44,
+    -70.44,
     66.56
   ],
   "stac_extensions": [

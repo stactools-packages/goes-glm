@@ -85,7 +85,6 @@ class StacTest(unittest.TestCase):
                 self.assertEqual(summaries["instruments"], ["FM1", "FM2"])
                 self.assertEqual(summaries["gsd"], [8000])
                 self.assertEqual(summaries["processing:level"], ["L2"])
-                self.assertEqual(summaries["goes:image-type"], ["FULL DISK"])
                 self.assertEqual(summaries["goes:orbital-slot"], ["West", "East"])
 
                 self.assertTrue("item_assets" in collection_dict)
@@ -162,7 +161,6 @@ class StacTest(unittest.TestCase):
                 self.assertEqual(item.properties["instruments"], [f"FM{instrument}"])
                 self.assertEqual(item.properties["gsd"], 8000)
                 self.assertEqual(item.properties["goes:system-environment"], "OR")
-                self.assertEqual(item.properties["goes:image-type"], "FULL DISK")
                 if (
                     id
                     == "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004_c20210010000030"
