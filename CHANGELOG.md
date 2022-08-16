@@ -27,4 +27,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - First release
 
 [Unreleased]: <https://github.com/stactools-packages/goes-glm/tree/main/>
-[0.1.0]: <https://github.com/stactools-packages/goes-glm/tree/0.1.0/>
+[0.1.0]: <https://github.com/stactools-packages/goes-glm/tree/v0.1.0/>
