@@ -41,6 +41,8 @@ pip install stactools-goes-glm
 
 ## Command-line Usage
 
+Use `stac goes-glm --help` to see all subcommands and options.
+
 ### Collection
 
 Create a collection:
@@ -74,10 +76,6 @@ Get information about all options for item creation:
 ```shell
 stac goes-glm create-item --help
 ```
-
-Use `stac goes-glm --help` to see all subcommands and options.
-
-Note: This package can only read files that contain the timestamp in the file name. It can NOT read the files that contain `latest` instead of a timestamp in the file name.
 
 ## Contributing
 
