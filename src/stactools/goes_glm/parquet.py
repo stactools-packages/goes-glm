@@ -1,6 +1,7 @@
 import logging
 import os
 from datetime import datetime, timedelta, timezone
+from math import isnan
 from typing import Any, Dict, List, Optional
 
 from geopandas import GeoDataFrame, GeoSeries
@@ -121,10 +122,41 @@ def create_asset(
     """
     # create a list of points
     geometries = []
-    count = dataset.variables[f"{type}_count"][0]
+    count_col = f"{type}_count"
+    count = dataset.variables[count_col][...].tolist()
+    if not isinstance(count, int):
+        logger.warning(
+            f"The value ({count}) for column {count_col} is not an integer. Assuming 0."
+        )
+        count = 0
+
+    lat_col = f"{type}_lat"
+    lat_var = dataset.variables[lat_col]
+    lat_var_len = len(lat_var)
+    if lat_var_len != count:
+        logger.warning(
+            f"{count_col} ({count}) != length of variable {lat_col} ({lat_var_len})"
+        )
+
+    lon_col = f"{type}_lon"
+    lon_var = dataset.variables[lon_col]
+    lon_var_len = len(lon_var)
+    if lon_var_len != count:
+        logger.warning(
+            f"{count_col} ({count}) != length of variable {lon_col} ({lon_var_len})"
+        )
+
+    if lon_var_len != count or lat_var_len != count:
+        if lon_var_len == lat_var_len:
+            count = lon_var_len
+        else:
+            raise Exception(
+                "length of {lat_col} ({lat_var_len}) != length of {lon_col} ({lon_var_len})"
+            )
+
     for i in range(0, count):
-        lat = dataset.variables[f"{type}_lat"][i]
-        lon = dataset.variables[f"{type}_lon"][i]
+        lat = lat_var[i]
+        lon = lon_var[i]
         geometries.append(Point(lon, lat))
 
     # fill dict with all data in a columnar way
@@ -136,7 +168,18 @@ def create_asset(
         if col == "lat" or col == "lon":
             continue
 
-        variable = dataset.variables[f"{type}_{col}"]
+        var_name = f"{type}_{col}"
+        if var_name not in dataset.variables:
+            if col.startswith("frame_"):
+                # Some datasets don't contain these variables so generate files without them
+                logger.warning(
+                    f"Variable {var_name} is missing, not exporting them to geoparquet"
+                )
+                continue
+            else:
+                raise Exception(f"Variable '{var_name}' is missing")
+
+        variable = dataset.variables[var_name]
         attrs = variable.ncattrs()
         data = variable[...].tolist()
         table_col = {
@@ -158,19 +201,37 @@ def create_asset(
                 new_col = col.replace("_offset", "")
                 base = datetime.fromisoformat(unit[14:]).replace(tzinfo=timezone.utc)
 
-                new_data: List[datetime] = []
+                new_data: List[Optional[datetime]] = []
+                invalid_datetimes = 0
                 for val in data:
-                    delta = timedelta(seconds=val)
-                    new_data.append(base + delta)
+                    if val is None or isnan(val):
+                        # Sometimes the values contain NaN/None values
+                        new_data.append(None)
+                        invalid_datetimes += 1
+                    else:
+                        try:
+                            delta = timedelta(seconds=val)
+                            new_data.append(base + delta)
+                        except TypeError:
+                            raise Exception(
+                                f"An invalid value '{val}' found in variable '{var_name}'"
+                            )
 
                 table_data[new_col] = new_data
-                table_cols.append(
-                    {
-                        "name": new_col,
-                        # todo: correct data type? #11
-                        "type": "datetime",
-                    }
-                )
+                col_info = {
+                    "name": new_col,
+                    "type": constants.PARQUET_DATETIME_COL_TYPE,
+                }
+
+                if invalid_datetimes > 0:
+                    logger.warning(
+                        f"The variable {var_name} contains {invalid_datetimes} `null` values"
+                    )
+                    col_info[
+                        "description"
+                    ] = f"The column contains {invalid_datetimes} `null` values"
+
+                table_cols.append(col_info)
 
         table_data[col] = data
         table_cols.append(table_col)

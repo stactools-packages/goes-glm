@@ -186,13 +186,49 @@ def create_item(
     if sys_env != "OR":
         logger.warning("You are ingesting test data.")
 
-    slot = constants.OrbitalSlot[dataset.orbital_slot.replace("-", "_")]
+    computed_datetime = center_datetime(
+        dataset.time_coverage_start, dataset.time_coverage_end
+    )
+
+    try:
+        platform = constants.Platforms[dataset.platform_ID]
+        if platform == constants.Platforms.G18:
+            raise Exception("GOES-18/T is not supported yet")
+    except ValueError:
+        raise Exception(
+            f"The dataset contains an invalid platform identifier: {dataset.platform_ID}"
+        )
+
+    try:
+        slot_str = dataset.orbital_slot.replace("-", "_")
+        slot = constants.OrbitalSlot[slot_str]
+    except KeyError:
+        # Some files seem to list "GOES_Test" as slot, use platform ID as indicator then.
+        logger.warning(
+            f"The value for 'orbital_slot' is invalid: {dataset.orbital_slot}"
+        )
+
+        # GOES-16 began drifting to the GOES-East operational location [...] on November 30, 2017.
+        # Drift was complete on December 11, 2017,
+        g16drift = datetime(2017, 12, 11, tzinfo=timezone.utc)
+        g17drift = datetime(2018, 11, 13, tzinfo=timezone.utc)
+        if platform == constants.Platforms.G16 and computed_datetime > g16drift:
+            slot = constants.OrbitalSlot.GOES_East
+        # GOES-17 began drifting to its GOES-West operational location [...] on October 24, 2018.
+        # Drift was completed on November 13, 2018
+        elif platform == constants.Platforms.G17 and computed_datetime > g17drift:
+            slot = constants.OrbitalSlot.GOES_West
+        else:
+            raise Exception(
+                f"The dataset contains an invalid oribtal slot identifier: {dataset.orbital_slot}"
+            )
+
     properties = {
         "start_datetime": dataset.time_coverage_start,
         "end_datetime": dataset.time_coverage_end,
         "mission": constants.MISSION,
         "constellation": constants.CONSTELLATION,
-        "platform": constants.Platforms[dataset.platform_ID],
+        "platform": platform,
         "instruments": [dataset.instrument_ID],
         "gsd": constants.RESOLUTION,
         "processing:level": constants.PROCESSING_LEVEL,
@@ -234,9 +270,7 @@ def create_item(
         properties=properties,
         geometry=geometry,
         bbox=bbox,
-        datetime=center_datetime(
-            dataset.time_coverage_start, dataset.time_coverage_end
-        ),
+        datetime=computed_datetime,
         collection=collection,
     )
 

@@ -98,6 +98,8 @@ PARQUET_KEY_EVENTS = "geoparquet_events"
 PARQUET_MEDIA_TYPE = "application/x-parquet"
 PARQUET_ROLES = ["data", "cloud-optimized"]
 PARQUET_GEOMETRY_COL = "geometry"
+# todo: is this the correct data type? #11
+PARQUET_DATETIME_COL_TYPE = "datetime"
 
 IGNORED_UNITS = ["1", "count"]
 

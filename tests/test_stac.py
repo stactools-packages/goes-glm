@@ -26,15 +26,11 @@ TEST_COLLECTIONS: List[Dict[str, Any]] = [
         "id": "goes-glm",
         "thumbnail": THUMBNAIL,
         "start_time": "2020-06-06T12:12:12.12Z",
-        "nogeoparquet": False,
-        "nonetcdf": False,
     },
     {
         "nogeoparquet": True,
-        "nonetcdf": False,
     },
     {
-        "nogeoparquet": False,
         "nonetcdf": True,
     },
 ]
@@ -42,19 +38,34 @@ TEST_COLLECTIONS: List[Dict[str, Any]] = [
 TEST_ITEMS: List[Dict[str, Any]] = [
     {
         "id": "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004_c20210010000030",
-        "nogeoparquet": False,
-        "nonetcdf": False,
         "collection": "./tests/data-files/collection.json",
     },
     {
         "id": "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004_c20210010000030",
         "nogeoparquet": True,
-        "nonetcdf": False,
     },
     {
         "id": "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200_c20221542100217",
-        "nogeoparquet": False,
         "nonetcdf": True,
+    },
+    {
+        "id": "OR_GLM-L2-LCFA_G16_s20181591447400_e20181591448000_c20181591448028",
+    },
+    {
+        "id": "OR_GLM-L2-LCFA_G16_s20182901026200_e20182901026400_c20182901026423",
+    },
+    {
+        "id": "OR_GLM-L2-LCFA_G16_s20182980537000_e20182980537200_c20182980537216",
+    },
+    {
+        "id": "OR_GLM-L2-LCFA_G16_s20210820633400_e20210820634005_c20210820634025",
+    },
+    {
+        "id": "OR_GLM-L2-LCFA_G17_s20182831047000_e20182831047200_c20182831047223",
+        "goes_test": True,
+    },
+    {
+        "id": "OR_GLM-L2-LCFA_G17_s20200160612000_e20200160612110_c20200160612335",
     },
 ]
 
@@ -64,8 +75,12 @@ class StacTest(unittest.TestCase):
         for test_data in TEST_COLLECTIONS:
             with self.subTest(test_data=test_data):
                 id: str = test_data["id"] if "id" in test_data else "goes-glm"
-                nogeoparquet: bool = test_data["nogeoparquet"]
-                nonetcdf: bool = test_data["nonetcdf"]
+                nogeoparquet: bool = (
+                    test_data["nogeoparquet"] if "nogeoparquet" in test_data else False
+                )
+                nonetcdf: bool = (
+                    test_data["nonetcdf"] if "nonetcdf" in test_data else False
+                )
 
                 collection = stac.create_collection(LICENSE, **test_data)
                 collection.set_self_href("")
@@ -118,8 +133,17 @@ class StacTest(unittest.TestCase):
         for test_data in TEST_ITEMS:
             with self.subTest(test_data=test_data):
                 id: str = test_data["id"]
-                nogeoparquet: bool = test_data["nogeoparquet"]
-                nonetcdf: bool = test_data["nonetcdf"]
+                nogeoparquet: bool = (
+                    test_data["nogeoparquet"] if "nogeoparquet" in test_data else False
+                )
+                nonetcdf: bool = (
+                    test_data["nonetcdf"] if "nonetcdf" in test_data else False
+                )
+                goes_test = False
+                if "goes_test" in test_data:
+                    goes_test = test_data["goes_test"]
+                    del test_data["goes_test"]
+
                 collection: Optional[Collection] = None
                 if "collection" in test_data:
                     collection = Collection.from_file(test_data["collection"])
@@ -133,6 +157,14 @@ class StacTest(unittest.TestCase):
                     del test_data["id"]
                     test_data["asset_href"] = dest_data_file
                     test_data["collection"] = collection
+
+                    if goes_test:
+                        with self.assertRaisesRegex(
+                            Exception,
+                            "The dataset contains an invalid oribtal slot identifier: GOES-Test",
+                        ):
+                            stac.create_item(**test_data)
+                        return
 
                     item = stac.create_item(**test_data)
                     item.validate()
@@ -226,7 +258,7 @@ class StacTest(unittest.TestCase):
 
                     self.assertTrue("cube:variables" in asset)
                     vars = asset["cube:variables"]
-                    self.assertEqual(len(vars), 48)
+                    self.assertGreaterEqual(len(vars), 45)  # often 48, sometimes less
                     for var in vars.values():
                         self.assertTrue("dimensions" in var)
                         self.assertTrue("type" in var)
