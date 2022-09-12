@@ -161,6 +161,7 @@ def create_item(
     collection: Optional[Collection] = None,
     nogeoparquet: bool = False,
     nonetcdf: bool = False,
+    fixnetcdf: bool = False,
 ) -> Item:
     """Create a STAC Item
 
@@ -174,130 +175,159 @@ def create_item(
         collection (pystac.Collection): HREF to an existing collection
         nogeoparquet (bool): If set to True, no geoparquet file is generated for the Item
         nonetcdf (bool): If set to True, the netCDF file is not added to the Item
+        fixnetcdf (bool): If set to True, fixes missing _Unsigned attributes in some of
+            the older netCDF files
 
     Returns:
         Item: STAC Item object
     """
 
-    dataset = Dataset(asset_href, "r", format="NETCDF4")
+    with Dataset(asset_href, "a", format="NETCDF4") as dataset:
+        id = dataset.dataset_name.replace(".nc", "")
+        sys_env = id[:2]
+        if sys_env != "OR":
+            logger.warning("You are ingesting test data.")
 
-    id = dataset.dataset_name.replace(".nc", "")
-    sys_env = id[:2]
-    if sys_env != "OR":
-        logger.warning("You are ingesting test data.")
-
-    computed_datetime = center_datetime(
-        dataset.time_coverage_start, dataset.time_coverage_end
-    )
-
-    try:
-        platform = constants.Platforms[dataset.platform_ID]
-        if platform == constants.Platforms.G18:
-            raise Exception("GOES-18/T is not supported yet")
-    except ValueError:
-        raise Exception(
-            f"The dataset contains an invalid platform identifier: {dataset.platform_ID}"
-        )
-
-    try:
-        slot_str = dataset.orbital_slot.replace("-", "_")
-        slot = constants.OrbitalSlot[slot_str]
-    except KeyError:
-        # Some files seem to list "GOES_Test" as slot, use platform ID as indicator then.
-        logger.warning(
-            f"The value for 'orbital_slot' is invalid: {dataset.orbital_slot}"
-        )
-
-        # GOES-16 began drifting to the GOES-East operational location [...] on November 30, 2017.
-        # Drift was complete on December 11, 2017,
-        g16drift = datetime(2017, 12, 11, tzinfo=timezone.utc)
-        g17drift = datetime(2018, 11, 13, tzinfo=timezone.utc)
-        if platform == constants.Platforms.G16 and computed_datetime > g16drift:
-            slot = constants.OrbitalSlot.GOES_East
-        # GOES-17 began drifting to its GOES-West operational location [...] on October 24, 2018.
-        # Drift was completed on November 13, 2018
-        elif platform == constants.Platforms.G17 and computed_datetime > g17drift:
-            slot = constants.OrbitalSlot.GOES_West
-        else:
+        var_count = len(dataset.variables)
+        if var_count != 45 and var_count != 48:
             raise Exception(
-                f"The dataset contains an invalid oribtal slot identifier: {dataset.orbital_slot}"
+                f"The number of variables is expected to be 45 or 48, but it is {var_count}"
             )
 
-    properties = {
-        "start_datetime": dataset.time_coverage_start,
-        "end_datetime": dataset.time_coverage_end,
-        "mission": constants.MISSION,
-        "constellation": constants.CONSTELLATION,
-        "platform": platform,
-        "instruments": [dataset.instrument_ID],
-        "gsd": constants.RESOLUTION,
-        "processing:level": constants.PROCESSING_LEVEL,
-        "processing:facility": dataset.production_site,
-        "goes:orbital-slot": slot,
-        "goes:system-environment": sys_env,
-    }
+        # See page 14-15 for details:
+        # https://www.noaasis.noaa.gov/pdf/ps-pvr/goes-16/GLM/Full/GOES16_GLM_FullValidation_ProductPerformanceGuide.pdf
+        defect_vars = {
+            "event_time_offset": False,
+            "group_time_offset": False,
+            "flash_time_offset_of_first_event": False,
+            "flash_time_offset_of_last_event": False,
+            "group_frame_time_offset": False,
+            "flash_frame_time_offset_of_first_event": False,
+            "flash_frame_time_offset_of_last_event": False,
+        }
+        for key in defect_vars:
+            if key in dataset.variables:
+                if not hasattr(dataset.variables[key], "_Unsigned"):
+                    dataset.variables[key]._Unsigned = "true"
+                    defect_vars[key] = True
 
-    if slot == constants.OrbitalSlot.GOES_East:
-        bbox = constants.ITEM_BBOX_EAST
-        geometry = constants.GEOMETRY_EAST
-    elif slot == constants.OrbitalSlot.GOES_West:
-        bbox = constants.ITEM_BBOX_WEST
-        geometry = constants.GEOMETRY_WEST
-    else:
-        bbox = None
-        geometry = None
+        computed_datetime = center_datetime(
+            dataset.time_coverage_start, dataset.time_coverage_end
+        )
 
-    centroid = {}
-    for key, var in dataset.variables.items():
-        if len(var.dimensions) != 0:
-            continue
+        try:
+            platform = constants.Platforms[dataset.platform_ID]
+            if platform == constants.Platforms.G18:
+                raise Exception("GOES-18/T is not supported yet")
+        except ValueError:
+            raise Exception(
+                f"The dataset contains an invalid platform identifier: {dataset.platform_ID}"
+            )
 
-        ma = var[...]
-        if var.name == "lat_field_of_view":
-            centroid["lat"] = ma.tolist()
-        elif var.name == "lon_field_of_view":
-            centroid["lon"] = ma.tolist()
-        elif ma.count() > 0:
-            properties[f"goes-glm:{var.name}"] = ma.tolist()
+        try:
+            slot_str = dataset.orbital_slot.replace("-", "_")
+            slot = constants.OrbitalSlot[slot_str]
+        except KeyError:
+            # Some files seem to list "GOES_Test" as slot, use platform ID as indicator then.
+            logger.warning(
+                f"The value for 'orbital_slot' is invalid: {dataset.orbital_slot}"
+            )
 
-    item = Item(
-        stac_extensions=[
-            # todo: add extension again once released #12
-            # constants.GOES_EXTENSION,
-            constants.PROCESSING_EXTENSION,
-        ],
-        id=id,
-        properties=properties,
-        geometry=geometry,
-        bbox=bbox,
-        datetime=computed_datetime,
-        collection=collection,
-    )
+            # GOES-16 began drifting to the GOES-East operational location [...] on
+            # November 30, 2017. Drift was complete on December 11, 2017,
+            g16drift = datetime(2017, 12, 11, tzinfo=timezone.utc)
+            g17drift = datetime(2018, 11, 13, tzinfo=timezone.utc)
+            if platform == constants.Platforms.G16 and computed_datetime > g16drift:
+                slot = constants.OrbitalSlot.GOES_East
+            # GOES-17 began drifting to its GOES-West operational location [...] on
+            # October 24, 2018. Drift was completed on November 13, 2018
+            elif platform == constants.Platforms.G17 and computed_datetime > g17drift:
+                slot = constants.OrbitalSlot.GOES_West
+            else:
+                raise Exception(
+                    "The dataset contains an invalid oribtal slot identifier: "
+                    + dataset.orbital_slot
+                )
 
-    proj = ProjectionExtension.ext(item, add_if_missing=True)
-    proj.epsg = constants.TARGET_CRS
-    if len(centroid) == 2:
-        proj.centroid = centroid
+        properties = {
+            "start_datetime": dataset.time_coverage_start,
+            "end_datetime": dataset.time_coverage_end,
+            "mission": constants.MISSION,
+            "constellation": constants.CONSTELLATION,
+            "platform": platform,
+            "instruments": [dataset.instrument_ID],
+            "gsd": constants.RESOLUTION,
+            "processing:level": constants.PROCESSING_LEVEL,
+            "processing:facility": dataset.production_site,
+            "goes:orbital-slot": slot,
+            "goes:system-environment": sys_env,
+        }
 
-    if not nogeoparquet:
-        target_folder = os.path.dirname(asset_href)
-        assets = parquet.convert(dataset, target_folder)
-        for key, asset_dict in assets.items():
+        if slot == constants.OrbitalSlot.GOES_East:
+            bbox = constants.ITEM_BBOX_EAST
+            geometry = constants.GEOMETRY_EAST
+        elif slot == constants.OrbitalSlot.GOES_West:
+            bbox = constants.ITEM_BBOX_WEST
+            geometry = constants.GEOMETRY_WEST
+        else:
+            bbox = None
+            geometry = None
+
+        centroid = {}
+        for key, var in dataset.variables.items():
+            if len(var.dimensions) != 0:
+                continue
+
+            ma = var[...]
+            if var.name == "lat_field_of_view":
+                centroid["lat"] = ma.tolist()
+            elif var.name == "lon_field_of_view":
+                centroid["lon"] = ma.tolist()
+            elif ma.count() > 0:
+                properties[f"goes-glm:{var.name}"] = ma.tolist()
+
+        item = Item(
+            stac_extensions=[
+                # todo: add extension again once released #12
+                # constants.GOES_EXTENSION,
+                constants.PROCESSING_EXTENSION,
+            ],
+            id=id,
+            properties=properties,
+            geometry=geometry,
+            bbox=bbox,
+            datetime=computed_datetime,
+            collection=collection,
+        )
+
+        proj = ProjectionExtension.ext(item, add_if_missing=True)
+        proj.epsg = constants.TARGET_CRS
+        if len(centroid) == 2:
+            proj.centroid = centroid
+
+        if not nogeoparquet:
+            target_folder = os.path.dirname(asset_href)
+            assets = parquet.convert(dataset, target_folder)
+            for key, asset_dict in assets.items():
+                asset = Asset.from_dict(asset_dict)
+                item.add_asset(key, asset)
+                TableExtension.ext(asset, add_if_missing=True)
+
+        if not nonetcdf:
+            # todo: replace with DataCube extension from PySTAC #16
+            item.stac_extensions.append(constants.DATACUBE_EXTENSION)
+            asset_dict = netcdf.create_asset(asset_href)
+            asset_dict["created"] = dataset.date_created
+            asset_dict["cube:dimensions"] = netcdf.to_cube_dimensions(dataset)
+            asset_dict["cube:variables"] = netcdf.to_cube_variables(dataset)
             asset = Asset.from_dict(asset_dict)
-            item.add_asset(key, asset)
-            TableExtension.ext(asset, add_if_missing=True)
+            item.add_asset(constants.NETCDF_KEY, asset)
 
-    if not nonetcdf:
-        # todo: replace with DataCube extension from PySTAC #16
-        item.stac_extensions.append(constants.DATACUBE_EXTENSION)
-        asset_dict = netcdf.create_asset(asset_href)
-        asset_dict["created"] = dataset.date_created
-        asset_dict["cube:dimensions"] = netcdf.to_cube_dimensions(dataset)
-        asset_dict["cube:variables"] = netcdf.to_cube_variables(dataset)
-        asset = Asset.from_dict(asset_dict)
-        item.add_asset(constants.NETCDF_KEY, asset)
+        for key, is_defect in defect_vars.items():
+            if is_defect:
+                del dataset.variables[key]._Unsigned
 
-    return item
+        return item
 
 
 def center_datetime(start: str, end: str) -> datetime:

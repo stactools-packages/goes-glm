@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- Nothing.
+- New option `fixnetcdf` (see issue [#17](https://github.com/stactools-packages/goes-glm/issues/17) for details)
 
 ### Deprecated
 
