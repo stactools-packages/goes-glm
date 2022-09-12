@@ -170,11 +170,9 @@ def create_asset(
 
         var_name = f"{type}_{col}"
         if var_name not in dataset.variables:
-            if col.startswith("frame_"):
-                # Some datasets don't contain these variables so generate files without them
-                logger.warning(
-                    f"Variable {var_name} is missing, not exporting them to geoparquet"
-                )
+            if col.startswith("frame_time_offset"):
+                # Some older datasets don't contain these variables so generate files without them.
+                # See https://github.com/stactools-packages/goes-glm/issues/17
                 continue
             else:
                 raise Exception(f"Variable '{var_name}' is missing")

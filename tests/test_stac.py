@@ -258,7 +258,9 @@ class StacTest(unittest.TestCase):
 
                     self.assertTrue("cube:variables" in asset)
                     vars = asset["cube:variables"]
-                    self.assertGreaterEqual(len(vars), 45)  # often 48, sometimes less
+                    # Some older files have 45 variables, newer ones have 48. See
+                    # https://github.com/stactools-packages/goes-glm/issues/17#issuecomment-1241875842
+                    self.assertTrue(len(vars) == 45 or len(vars) == 48)
                     for var in vars.values():
                         self.assertTrue("dimensions" in var)
                         self.assertTrue("type" in var)
