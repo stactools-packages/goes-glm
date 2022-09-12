@@ -20,7 +20,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
-- Nothing.
+- Handle missing `...frame_time_offset...` variables correctly
+- Handle inconsistencies in the `..._count` variables better
+- Don't throw an error if the orbital slot is GOES-Test
+- Handle netCDF files with no events/flashes correctly
 
 ## [0.1.0]
 
