@@ -196,21 +196,20 @@ def create_item(
 
         # See page 14-15 for details:
         # https://www.noaasis.noaa.gov/pdf/ps-pvr/goes-16/GLM/Full/GOES16_GLM_FullValidation_ProductPerformanceGuide.pdf
-        defect_vars = [
-            "event_time_offset",
-            "group_time_offset",
-            "flash_time_offset_of_first_event",
-            "flash_time_offset_of_last_event",
-            "group_frame_time_offset",
-            "flash_frame_time_offset_of_first_event",
-            "flash_frame_time_offset_of_last_event",
-        ]
-        missing_unsigned = False
-        for defect_var in defect_vars:
-            if defect_var in dataset.variables:
-                if not hasattr(dataset.variables[defect_var], "_Unsigned"):
-                    dataset.variables[defect_var]._Unsigned = "true"
-                    missing_unsigned = True
+        defect_vars = {
+            "event_time_offset": False,
+            "group_time_offset": False,
+            "flash_time_offset_of_first_event": False,
+            "flash_time_offset_of_last_event": False,
+            "group_frame_time_offset": False,
+            "flash_frame_time_offset_of_first_event": False,
+            "flash_frame_time_offset_of_last_event": False,
+        }
+        for key in defect_vars:
+            if key in dataset.variables:
+                if not hasattr(dataset.variables[key], "_Unsigned"):
+                    dataset.variables[key]._Unsigned = "true"
+                    defect_vars[key] = True
 
         computed_datetime = center_datetime(
             dataset.time_coverage_start, dataset.time_coverage_end
@@ -324,10 +323,9 @@ def create_item(
             asset = Asset.from_dict(asset_dict)
             item.add_asset(constants.NETCDF_KEY, asset)
 
-        if missing_unsigned and not fixnetcdf:
-            for defect_var in defect_vars:
-                if defect_var in dataset.variables:
-                    del dataset.variables[defect_var]._Unsigned
+        for key, is_defect in defect_vars.items():
+            if is_defect:
+                del dataset.variables[key]._Unsigned
 
         return item
 
