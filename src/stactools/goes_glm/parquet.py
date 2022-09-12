@@ -1,7 +1,6 @@
 import logging
 import os
 from datetime import datetime, timedelta, timezone
-from math import isnan
 from typing import Any, Dict, List, Optional
 
 from geopandas import GeoDataFrame, GeoSeries
@@ -200,34 +199,20 @@ def create_asset(
                 base = datetime.fromisoformat(unit[14:]).replace(tzinfo=timezone.utc)
 
                 new_data: List[Optional[datetime]] = []
-                invalid_datetimes = 0
                 for val in data:
-                    if val is None or isnan(val):
-                        # Sometimes the values contain NaN/None values
-                        new_data.append(None)
-                        invalid_datetimes += 1
-                    else:
-                        try:
-                            delta = timedelta(seconds=val)
-                            new_data.append(base + delta)
-                        except TypeError:
-                            raise Exception(
-                                f"An invalid value '{val}' found in variable '{var_name}'"
-                            )
+                    try:
+                        delta = timedelta(seconds=val)
+                        new_data.append(base + delta)
+                    except TypeError:
+                        raise Exception(
+                            f"An invalid value '{val}' found in variable '{var_name}'"
+                        )
 
                 table_data[new_col] = new_data
                 col_info = {
                     "name": new_col,
                     "type": constants.PARQUET_DATETIME_COL_TYPE,
                 }
-
-                if invalid_datetimes > 0:
-                    logger.warning(
-                        f"The variable {var_name} contains {invalid_datetimes} `null` values"
-                    )
-                    col_info[
-                        "description"
-                    ] = f"The column contains {invalid_datetimes} `null` values"
 
                 table_cols.append(col_info)
 

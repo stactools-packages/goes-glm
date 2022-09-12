@@ -96,12 +96,18 @@ def create_goesglm_command(cli: Group) -> Command:
         default=False,
         help="Does not include the netCDF file in the created metadata if set to `TRUE`.",
     )
+    @click.option(
+        "--fixnetcdf",
+        default=False,
+        help="Fixes missing _Unsigned attributes in some older netCDF files if set to `TRUE`.",
+    )
     def create_item_command(
         source: str,
         destination: str,
         collection: str = "",
         nogeoparquet: bool = False,
         nonetcdf: bool = False,
+        fixnetcdf: bool = False,
     ) -> None:
         """Creates a STAC Item
 
@@ -113,7 +119,9 @@ def create_goesglm_command(cli: Group) -> Command:
         if len(collection) > 0:
             stac_collection = Collection.from_file(collection)
 
-        item = stac.create_item(source, stac_collection, nogeoparquet, nonetcdf)
+        item = stac.create_item(
+            source, stac_collection, nogeoparquet, nonetcdf, fixnetcdf
+        )
         item.save_object(dest_href=destination)
 
         return None
