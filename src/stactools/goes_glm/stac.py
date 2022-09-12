@@ -323,9 +323,10 @@ def create_item(
             asset = Asset.from_dict(asset_dict)
             item.add_asset(constants.NETCDF_KEY, asset)
 
-        for key, is_defect in defect_vars.items():
-            if is_defect:
-                del dataset.variables[key]._Unsigned
+        if not fixnetcdf:
+            for key, is_defect in defect_vars.items():
+                if is_defect:
+                    del dataset.variables[key]._Unsigned
 
         return item
 
