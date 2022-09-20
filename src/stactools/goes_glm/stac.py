@@ -229,17 +229,18 @@ def create_item(
                 f"The dataset contains an invalid platform identifier: {dataset.platform_ID}"
             )
 
-        if dataset.orbital_slot == "GOES-Test":
-            # https://github.com/stactools-packages/goes-glm/issues/17#issuecomment-1244161746
+        try:
+            slot_str = dataset.orbital_slot.replace("-", "_")
+            slot = constants.OrbitalSlot[slot_str]
+        except KeyError:
             logger.warning(
-                "Found 'GOES_Text' as orbital identifier. Guessing that this is GOES 17."
+                f"Found 'GOES_Text' as orbital identifier. Guessing that this is {platform}."
             )
-            slot = constants.OrbitalSlot.GOES_West
-        else:
-            try:
-                slot_str = dataset.orbital_slot.replace("-", "_")
-                slot = constants.OrbitalSlot[slot_str]
-            except KeyError:
+            if platform == constants.Platforms.G16:
+                slot = constants.OrbitalSlot.GOES_East
+            elif platform == constants.Platforms.G17:
+                slot = constants.OrbitalSlot.GOES_West
+            else:
                 raise Exception(
                     f"The value for 'orbital_slot' is invalid: {dataset.orbital_slot}"
                 )
