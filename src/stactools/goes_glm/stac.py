@@ -224,29 +224,19 @@ def create_item(
                 f"The dataset contains an invalid platform identifier: {dataset.platform_ID}"
             )
 
-        try:
-            slot_str = dataset.orbital_slot.replace("-", "_")
-            slot = constants.OrbitalSlot[slot_str]
-        except KeyError:
-            # Some files seem to list "GOES_Test" as slot, use platform ID as indicator then.
+        if dataset.orbital_slot == "GOES-Test":
+            # https://github.com/stactools-packages/goes-glm/issues/17#issuecomment-1244161746
             logger.warning(
-                f"The value for 'orbital_slot' is invalid: {dataset.orbital_slot}"
+                f"Found 'GOES_Text' as orbital identifier. Guessing that this is GOES 17."
             )
-
-            # GOES-16 began drifting to the GOES-East operational location [...] on
-            # November 30, 2017. Drift was complete on December 11, 2017,
-            g16drift = datetime(2017, 12, 11, tzinfo=timezone.utc)
-            g17drift = datetime(2018, 11, 13, tzinfo=timezone.utc)
-            if platform == constants.Platforms.G16 and computed_datetime > g16drift:
-                slot = constants.OrbitalSlot.GOES_East
-            # GOES-17 began drifting to its GOES-West operational location [...] on
-            # October 24, 2018. Drift was completed on November 13, 2018
-            elif platform == constants.Platforms.G17 and computed_datetime > g17drift:
-                slot = constants.OrbitalSlot.GOES_West
-            else:
+            slot = constants.OrbitalSlot.GOES_West
+        else:
+            try:
+                slot_str = dataset.orbital_slot.replace("-", "_")
+                slot = constants.OrbitalSlot[slot_str]
+            except KeyError:
                 raise Exception(
-                    "The dataset contains an invalid oribtal slot identifier: "
-                    + dataset.orbital_slot
+                    f"The value for 'orbital_slot' is invalid: {dataset.orbital_slot}"
                 )
 
         properties = {

@@ -62,7 +62,6 @@ TEST_ITEMS: List[Dict[str, Any]] = [
     },
     {
         "id": "OR_GLM-L2-LCFA_G17_s20182831047000_e20182831047200_c20182831047223",
-        "goes_test": True,
     },
     {
         "id": "OR_GLM-L2-LCFA_G17_s20200160612000_e20200160612110_c20200160612335",
@@ -139,10 +138,6 @@ class StacTest(unittest.TestCase):
                 nonetcdf: bool = (
                     test_data["nonetcdf"] if "nonetcdf" in test_data else False
                 )
-                goes_test = False
-                if "goes_test" in test_data:
-                    goes_test = test_data["goes_test"]
-                    del test_data["goes_test"]
 
                 collection: Optional[Collection] = None
                 if "collection" in test_data:
@@ -157,14 +152,6 @@ class StacTest(unittest.TestCase):
                     del test_data["id"]
                     test_data["asset_href"] = dest_data_file
                     test_data["collection"] = collection
-
-                    if goes_test:
-                        with self.assertRaisesRegex(
-                            Exception,
-                            "The dataset contains an invalid oribtal slot identifier: GOES-Test",
-                        ):
-                            stac.create_item(**test_data)
-                        return
 
                     item = stac.create_item(**test_data)
                     item.validate()
