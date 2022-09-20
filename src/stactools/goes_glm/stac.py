@@ -93,8 +93,7 @@ def create_collection(
 
     collection = Collection(
         stac_extensions=[
-            # todo: add extension again once released #12
-            # constants.GOES_EXTENSION,
+            constants.GOES_EXTENSION,
             constants.PROCESSING_EXTENSION,
         ],
         id=id,
@@ -284,8 +283,7 @@ def create_item(
 
         item = Item(
             stac_extensions=[
-                # todo: add extension again once released #12
-                # constants.GOES_EXTENSION,
+                constants.GOES_EXTENSION,
                 constants.PROCESSING_EXTENSION,
             ],
             id=id,
