@@ -101,6 +101,11 @@ def create_goesglm_command(cli: Group) -> Command:
         default=False,
         help="Fixes missing _Unsigned attributes in some older netCDF files if set to `TRUE`.",
     )
+    @click.option(
+        "--appendctime",
+        default=False,
+        help="Appends the creation time to the ID of the item if set to `TRUE`.",
+    )
     def create_item_command(
         source: str,
         destination: str,
@@ -108,6 +113,7 @@ def create_goesglm_command(cli: Group) -> Command:
         nogeoparquet: bool = False,
         nonetcdf: bool = False,
         fixnetcdf: bool = False,
+        appendctime: bool = False,
     ) -> None:
         """Creates a STAC Item
 
@@ -120,7 +126,7 @@ def create_goesglm_command(cli: Group) -> Command:
             stac_collection = Collection.from_file(collection)
 
         item = stac.create_item(
-            source, stac_collection, nogeoparquet, nonetcdf, fixnetcdf
+            source, stac_collection, nogeoparquet, nonetcdf, fixnetcdf, appendctime
         )
         item.save_object(dest_href=destination)
 

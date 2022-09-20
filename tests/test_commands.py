@@ -70,7 +70,8 @@ class CommandsTest(CliTestCase):
 
                     result = self.run_command(
                         f"goes-glm create-item {dest_data_file} {dest_stac} "
-                        f"--collection {src_collection}"
+                        f"--collection {src_collection} "
+                        f"--appendctime TRUE"
                     )
                     self.assertEqual(
                         result.exit_code, 0, msg="\n{}".format(result.output)

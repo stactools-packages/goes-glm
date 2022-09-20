@@ -37,34 +37,43 @@ TEST_COLLECTIONS: List[Dict[str, Any]] = [
 
 TEST_ITEMS: List[Dict[str, Any]] = [
     {
-        "id": "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004_c20210010000030",
+        "name": "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004_c20210010000030",
+        "id": "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004",
         "collection": "./tests/data-files/collection.json",
     },
     {
-        "id": "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004_c20210010000030",
+        "name": "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004_c20210010000030",
+        "id": "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004",
         "nogeoparquet": True,
     },
     {
-        "id": "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200_c20221542100217",
+        "name": "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200_c20221542100217",
         "nonetcdf": True,
+        "appendctime": True,
     },
     {
-        "id": "OR_GLM-L2-LCFA_G16_s20181591447400_e20181591448000_c20181591448028",
+        "name": "OR_GLM-L2-LCFA_G16_s20181591447400_e20181591448000_c20181591448028",
+        "appendctime": True,
     },
     {
-        "id": "OR_GLM-L2-LCFA_G16_s20182901026200_e20182901026400_c20182901026423",
+        "name": "OR_GLM-L2-LCFA_G16_s20182901026200_e20182901026400_c20182901026423",
+        "appendctime": True,
     },
     {
-        "id": "OR_GLM-L2-LCFA_G16_s20182980537000_e20182980537200_c20182980537216",
+        "name": "OR_GLM-L2-LCFA_G16_s20182980537000_e20182980537200_c20182980537216",
+        "appendctime": True,
     },
     {
-        "id": "OR_GLM-L2-LCFA_G16_s20210820633400_e20210820634005_c20210820634025",
+        "name": "OR_GLM-L2-LCFA_G16_s20210820633400_e20210820634005_c20210820634025",
+        "id": "OR_GLM-L2-LCFA_G16_s20210820633400_e20210820634005",
     },
     {
-        "id": "OR_GLM-L2-LCFA_G17_s20182831047000_e20182831047200_c20182831047223",
+        "name": "OR_GLM-L2-LCFA_G17_s20182831047000_e20182831047200_c20182831047223",
+        "appendctime": True,
     },
     {
-        "id": "OR_GLM-L2-LCFA_G17_s20200160612000_e20200160612110_c20200160612335",
+        "name": "OR_GLM-L2-LCFA_G17_s20200160612000_e20200160612110_c20200160612335",
+        "appendctime": True,
     },
 ]
 
@@ -131,12 +140,16 @@ class StacTest(unittest.TestCase):
     def test_create_item(self) -> None:
         for test_data in TEST_ITEMS:
             with self.subTest(test_data=test_data):
-                id: str = test_data["id"]
+                name: str = test_data["name"]
+                id: str = test_data["id"] if "id" in test_data else name
                 nogeoparquet: bool = (
                     test_data["nogeoparquet"] if "nogeoparquet" in test_data else False
                 )
                 nonetcdf: bool = (
                     test_data["nonetcdf"] if "nonetcdf" in test_data else False
+                )
+                appendctime: bool = (
+                    test_data["appendctime"] if "appendctime" in test_data else False
                 )
 
                 collection: Optional[Collection] = None
@@ -145,11 +158,13 @@ class StacTest(unittest.TestCase):
 
                 item: Optional[Item] = None
                 with TemporaryDirectory() as tmp_dir:
-                    src_data_file = os.path.join("./tests/data-files/", f"{id}.nc")
-                    dest_data_file = os.path.join(tmp_dir, f"{id}.nc")
+                    src_data_file = os.path.join("./tests/data-files/", f"{name}.nc")
+                    dest_data_file = os.path.join(tmp_dir, f"{name}.nc")
                     shutil.copyfile(src_data_file, dest_data_file)
 
-                    del test_data["id"]
+                    del test_data["name"]
+                    if "id" in test_data:
+                        del test_data["id"]
                     test_data["asset_href"] = dest_data_file
                     test_data["collection"] = collection
 
@@ -164,7 +179,7 @@ class StacTest(unittest.TestCase):
                     platform = 18
 
                 self.assertIsNotNone(item)
-                self.assertEqual(item.id, id)
+                self.assertEqual(item.id, name if appendctime else id)
                 if collection is not None:
                     self.assertEqual(item.collection_id, collection.id)
                 else:

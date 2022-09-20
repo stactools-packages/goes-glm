@@ -1,5 +1,6 @@
 import logging
 import os
+import re
 from datetime import datetime, timezone
 from typing import Optional
 
@@ -162,6 +163,7 @@ def create_item(
     nogeoparquet: bool = False,
     nonetcdf: bool = False,
     fixnetcdf: bool = False,
+    appendctime: bool = False,
 ) -> Item:
     """Create a STAC Item
 
@@ -177,6 +179,7 @@ def create_item(
         nonetcdf (bool): If set to True, the netCDF file is not added to the Item
         fixnetcdf (bool): If set to True, fixes missing _Unsigned attributes in some of
             the older netCDF files
+        appendctime (bool): Appends the creation time to the ID of the item if set to `TRUE`.
 
     Returns:
         Item: STAC Item object
@@ -184,6 +187,8 @@ def create_item(
 
     with Dataset(asset_href, "a", format="NETCDF4") as dataset:
         id = dataset.dataset_name.replace(".nc", "")
+        if not appendctime:
+            id = re.sub(r"_c\d+$", "", id)
         sys_env = id[:2]
         if sys_env != "OR":
             logger.warning("You are ingesting test data.")
@@ -227,7 +232,7 @@ def create_item(
         if dataset.orbital_slot == "GOES-Test":
             # https://github.com/stactools-packages/goes-glm/issues/17#issuecomment-1244161746
             logger.warning(
-                f"Found 'GOES_Text' as orbital identifier. Guessing that this is GOES 17."
+                "Found 'GOES_Text' as orbital identifier. Guessing that this is GOES 17."
             )
             slot = constants.OrbitalSlot.GOES_West
         else:

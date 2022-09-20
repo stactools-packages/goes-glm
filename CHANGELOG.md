@@ -8,7 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- New option `fixnetcdf` (see issue [#17](https://github.com/stactools-packages/goes-glm/issues/17) for details)
+- New option `fixnetcdf` for Item creation (see issue [#17](https://github.com/stactools-packages/goes-glm/issues/17) for details)
+- New option `appendctime` for Item creation (see issue [#19](https://github.com/stactools-packages/goes-glm/issues/19) for details)
 
 ### Deprecated
 
