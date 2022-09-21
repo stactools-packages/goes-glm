@@ -108,7 +108,9 @@ class StacTest(unittest.TestCase):
                 self.assertEqual(summaries["instruments"], ["FM1", "FM2"])
                 self.assertEqual(summaries["gsd"], [8000])
                 self.assertEqual(summaries["processing:level"], ["L2"])
-                self.assertEqual(summaries["goes:orbital-slot"], ["West", "East"])
+                self.assertEqual(
+                    summaries["goes:orbital-slot"], ["West", "East", "Test"]
+                )
 
                 self.assertTrue("item_assets" in collection_dict)
                 assets: Dict[str, Dict[str, Any]] = collection_dict["item_assets"]
