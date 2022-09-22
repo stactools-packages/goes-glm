@@ -232,13 +232,19 @@ class StacTest(unittest.TestCase):
                         self.assertTrue("table:row_count" in asset)
                         self.assertEqual(asset["table:primary_geometry"], "geometry")
                         self.assertTrue("table:columns" in asset)
-                        hasGeometryCol = False
+                        cols = []
                         for col in asset["table:columns"]:
                             self.assertTrue("name" in col)
                             self.assertTrue("type" in col)
-                            if col["name"] == "geometry":
-                                hasGeometryCol = True
-                        self.assertTrue(hasGeometryCol)
+                            cols.append(col["name"])
+                        # check for geometry column
+                        self.assertIn("geometry", cols)
+                        # check for datetime columns
+                        if key == "geoparquet_flashes":
+                            self.assertIn("time_of_first_event", cols)
+                            self.assertIn("time_of_last_event", cols)
+                        else:
+                            self.assertIn("time", cols)
 
                 # Check netCDF asset
                 if nonetcdf:

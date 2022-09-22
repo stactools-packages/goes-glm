@@ -87,6 +87,10 @@
           "description": "product-unique lightning event identifier"
         },
         {
+          "name": "time",
+          "type": "datetime"
+        },
+        {
           "name": "time_offset",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: event's time of occurrence",
@@ -126,10 +130,18 @@
           "description": "product-unique lightning flash identifier"
         },
         {
+          "name": "time_of_first_event",
+          "type": "datetime"
+        },
+        {
           "name": "time_offset_of_first_event",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: time of occurrence of first constituent event in flash",
           "unit": "milliseconds since 2018-10-10 10:47:00.000"
+        },
+        {
+          "name": "time_of_last_event",
+          "type": "datetime"
         },
         {
           "name": "time_offset_of_last_event",
@@ -175,6 +187,10 @@
           "name": "id",
           "type": "int32",
           "description": "product-unique lightning group identifier"
+        },
+        {
+          "name": "time",
+          "type": "datetime"
         },
         {
           "name": "time_offset",
