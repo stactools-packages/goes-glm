@@ -31,6 +31,7 @@ to geoparquet files.
 - [Collection](examples/collection.json)
 - [Item (GOES-16/R)](examples/item.json)
 - [Item (GOES-17/S)](examples/item2.json)
+- [Item (GOES-17/S (Test) before drifting to the final location)](examples/item3.json)
 - [Browse the example in a human-readable form](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/stactools-packages/goes-glm/main/examples/collection.json)
 
 ## Installation
