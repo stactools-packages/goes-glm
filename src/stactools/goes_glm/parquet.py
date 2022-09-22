@@ -1,5 +1,6 @@
 import logging
 import os
+import re
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 
@@ -194,14 +195,22 @@ def create_asset(
                 table_col["unit"] = unit
 
             # Convert offsets into datetimes
-            if unit.startswith("seconds since "):
+            if "seconds since" in unit:
                 new_col = col.replace("_offset", "")
-                base = datetime.fromisoformat(unit[14:]).replace(tzinfo=timezone.utc)
+                # Goes-Test uses milliseconds while all other slots use seconds
+                milliseconds = True if "milliseconds" in unit else False
+                extracted_timestamp = re.sub(r"^(milli)?seconds since\s+", "", unit)
+                base = datetime.fromisoformat(extracted_timestamp).replace(
+                    tzinfo=timezone.utc
+                )
 
                 new_data: List[Optional[datetime]] = []
                 for val in data:
                     try:
-                        delta = timedelta(seconds=val)
+                        if milliseconds:
+                            delta = timedelta(milliseconds=val)
+                        else:
+                            delta = timedelta(seconds=val)
                         new_data.append(base + delta)
                     except TypeError:
                         raise Exception(

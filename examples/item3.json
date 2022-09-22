@@ -1,10 +1,10 @@
 {
   "type": "Feature",
   "stac_version": "1.0.0",
-  "id": "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200",
+  "id": "OR_GLM-L2-LCFA_G17_s20182831047000_e20182831047200",
   "properties": {
-    "start_datetime": "2022-06-03T21:00:00.0Z",
-    "end_datetime": "2022-06-03T21:00:20.0Z",
+    "start_datetime": "2018-10-10T10:47:00.0Z",
+    "end_datetime": "2018-10-10T10:47:20.0Z",
     "mission": "GOES",
     "constellation": "GOES",
     "platform": "GOES-17",
@@ -14,72 +14,49 @@
     "gsd": 8000,
     "processing:level": "L2",
     "processing:facility": "WCDAS",
-    "goes:orbital-slot": "West",
+    "goes:orbital-slot": "Test",
     "goes:system-environment": "OR",
-    "goes-glm:product_time": 707562000.0,
+    "goes-glm:product_time": 592440420.0,
     "goes-glm:lightning_wavelength": 777.3699951171875,
     "goes-glm:group_time_threshold": 0.0,
     "goes-glm:flash_time_threshold": 3.3299999237060547,
-    "goes-glm:event_count": 1229,
-    "goes-glm:group_count": 811,
-    "goes-glm:flash_count": 117,
+    "goes-glm:event_count": 6687,
+    "goes-glm:group_count": 6171,
+    "goes-glm:flash_count": 123,
     "goes-glm:percent_navigated_L1b_events": 1.0,
-    "goes-glm:yaw_flip_flag": 0,
     "goes-glm:nominal_satellite_subpoint_lat": 0.0,
     "goes-glm:nominal_satellite_height": 35786.0234375,
-    "goes-glm:nominal_satellite_subpoint_lon": -137.1999969482422,
+    "goes-glm:nominal_satellite_subpoint_lon": -89.5,
     "goes-glm:percent_uncorrectable_L0_errors": 0.0,
     "proj:epsg": 4326,
     "proj:centroid": {
       "lat": 0.0,
-      "lon": -137.0
+      "lon": -89.5
     },
-    "datetime": "2022-06-03T21:00:10Z"
+    "datetime": "2018-10-10T10:47:10Z"
   },
   "geometry": {
     "type": "Polygon",
     "coordinates": [
       [
         [
-          156.44,
+          -156.06,
           66.56
         ],
         [
-          156.44,
+          -156.06,
           -66.56
         ],
         [
-          180,
+          -22.94,
           -66.56
         ],
         [
-          180,
+          -22.94,
           66.56
         ],
         [
-          156.44,
-          66.56
-        ]
-      ],
-      [
-        [
-          -180,
-          66.56
-        ],
-        [
-          -180,
-          -66.56
-        ],
-        [
-          -70.44,
-          -66.56
-        ],
-        [
-          -70.44,
-          66.56
-        ],
-        [
-          -180,
+          -156.06,
           66.56
         ]
       ]
@@ -117,7 +94,7 @@
           "name": "time_offset",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: event's time of occurrence",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
+          "unit": "milliseconds since 2018-10-10 10:47:00.000"
         },
         {
           "name": "energy",
@@ -131,7 +108,7 @@
           "description": "product-unique lightning group identifier for one or more events"
         }
       ],
-      "table:row_count": 1229,
+      "table:row_count": 6687,
       "roles": [
         "data",
         "cloud-optimized"
@@ -160,7 +137,7 @@
           "name": "time_offset_of_first_event",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: time of occurrence of first constituent event in flash",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
+          "unit": "milliseconds since 2018-10-10 10:47:00.000"
         },
         {
           "name": "time_of_last_event",
@@ -170,33 +147,13 @@
           "name": "time_offset_of_last_event",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: time of occurrence of last constituent event in flash",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
-        },
-        {
-          "name": "frame_time_of_first_event",
-          "type": "datetime"
-        },
-        {
-          "name": "frame_time_offset_of_first_event",
-          "type": "int16",
-          "description": "GLM L2+ Lightning Detection: time of occurrence of first constituent event in flash",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
-        },
-        {
-          "name": "frame_time_of_last_event",
-          "type": "datetime"
-        },
-        {
-          "name": "frame_time_offset_of_last_event",
-          "type": "int16",
-          "description": "GLM L2+ Lightning Detection: time of occurrence of last constituent event in flash",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
+          "unit": "milliseconds since 2018-10-10 10:47:00.000"
         },
         {
           "name": "area",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: flash area coverage (pixels containing at least one constituent event only)",
-          "unit": "m2"
+          "unit": "km2"
         },
         {
           "name": "energy",
@@ -210,7 +167,7 @@
           "description": "GLM L2+ Lightning Detection: flash data quality flags"
         }
       ],
-      "table:row_count": 117,
+      "table:row_count": 123,
       "roles": [
         "data",
         "cloud-optimized"
@@ -239,23 +196,13 @@
           "name": "time_offset",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: mean time of group's constituent events' times of occurrence",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
-        },
-        {
-          "name": "frame_time",
-          "type": "datetime"
-        },
-        {
-          "name": "frame_time_offset",
-          "type": "int16",
-          "description": "GLM L2+ Lightning Detection: mean time of group's constituent events' times of occurrence",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
+          "unit": "milliseconds since 2018-10-10 10:47:00.000"
         },
         {
           "name": "area",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: group area coverage (pixels containing at least one constituent event only)",
-          "unit": "m2"
+          "unit": "km2"
         },
         {
           "name": "energy",
@@ -274,17 +221,17 @@
           "description": "product-unique lightning flash identifier for one or more groups"
         }
       ],
-      "table:row_count": 811,
+      "table:row_count": 6171,
       "roles": [
         "data",
         "cloud-optimized"
       ]
     },
     "netcdf": {
-      "href": "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200_c20221542100217.nc",
+      "href": "OR_GLM-L2-LCFA_G17_s20182831047000_e20182831047200_c20182831047223.nc",
       "type": "application/netcdf",
       "title": "Original netCDF 4 file",
-      "created": "2022-06-03T21:00:21.7Z",
+      "created": "2018-10-10T10:47:22.3Z",
       "cube:dimensions": {
         "number_of_flashes": {
           "type": "number_of_flashes",
@@ -310,14 +257,14 @@
         "number_of_time_bounds": {
           "type": "number_of_time_bounds",
           "extent": [
-            707562000.0,
-            707562020.0
+            592440420.0,
+            592440440.0
           ]
         },
         "number_of_field_of_view_bounds": {
           "type": "number_of_field_of_view_bounds",
           "extent": [
-            -203.55999755859375,
+            -156.05999755859375,
             66.55999755859375
           ]
         },
@@ -343,7 +290,7 @@
           ],
           "type": "data",
           "description": "event's time of occurrence",
-          "unit": "seconds since 2022-06-03 21:00:00.000",
+          "unit": "milliseconds since 2018-10-10 10:47:00.000",
           "axis": "T"
         },
         "event_lat": {
@@ -392,16 +339,7 @@
           ],
           "type": "data",
           "description": "mean time of group's constituent events' times of occurrence",
-          "unit": "seconds since 2022-06-03 21:00:00.000",
-          "axis": "T"
-        },
-        "group_frame_time_offset": {
-          "dimensions": [
-            "number_of_groups"
-          ],
-          "type": "data",
-          "description": "mean time of group's constituent events' times of occurrence",
-          "unit": "seconds since 2022-06-03 21:00:00.000",
+          "unit": "milliseconds since 2018-10-10 10:47:00.000",
           "axis": "T"
         },
         "group_lat": {
@@ -428,7 +366,7 @@
           ],
           "type": "auxiliary",
           "description": "group area coverage (pixels containing at least one constituent event only)",
-          "unit": "m2"
+          "unit": "km2"
         },
         "group_energy": {
           "dimensions": [
@@ -465,7 +403,7 @@
           ],
           "type": "data",
           "description": "time of occurrence of first constituent event in flash",
-          "unit": "seconds since 2022-06-03 21:00:00.000",
+          "unit": "milliseconds since 2018-10-10 10:47:00.000",
           "axis": "T"
         },
         "flash_time_offset_of_last_event": {
@@ -474,24 +412,7 @@
           ],
           "type": "data",
           "description": "time of occurrence of last constituent event in flash",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
-        },
-        "flash_frame_time_offset_of_first_event": {
-          "dimensions": [
-            "number_of_flashes"
-          ],
-          "type": "data",
-          "description": "time of occurrence of first constituent event in flash",
-          "unit": "seconds since 2022-06-03 21:00:00.000",
-          "axis": "T"
-        },
-        "flash_frame_time_offset_of_last_event": {
-          "dimensions": [
-            "number_of_flashes"
-          ],
-          "type": "data",
-          "description": "time of occurrence of last constituent event in flash",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
+          "unit": "milliseconds since 2018-10-10 10:47:00.000"
         },
         "flash_lat": {
           "dimensions": [
@@ -517,7 +438,7 @@
           ],
           "type": "auxiliary",
           "description": "flash area coverage (pixels containing at least one constituent event only)",
-          "unit": "m2"
+          "unit": "km2"
         },
         "flash_energy": {
           "dimensions": [
@@ -679,9 +600,9 @@
     }
   },
   "bbox": [
-    156.44,
+    -156.06,
     -66.56,
-    -70.44,
+    -22.94,
     66.56
   ],
   "stac_extensions": [

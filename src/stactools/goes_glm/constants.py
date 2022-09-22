@@ -86,6 +86,7 @@ class Platforms(str, enum.Enum):
 class OrbitalSlot(str, enum.Enum):
     GOES_West = "West"
     GOES_East = "East"
+    GOES_Test = "Test"
 
 
 # Assets
@@ -115,6 +116,7 @@ TARGET_CRS = 4326
 # Bounding boxes and geometries - note: west crosses the antimeridian!
 ITEM_BBOX_WEST = [156.44, -66.56, -70.44, 66.56]
 ITEM_BBOX_EAST = [-141.56, -66.56, -8.44, 66.56]
+ITEM_BBOX_TEST = [-156.06, -66.56, -22.94, 66.56]
 COLLECTION_BBOXES = [
     # Union
     [156.44, -66.56, -8.44, 66.56],
@@ -123,6 +125,8 @@ COLLECTION_BBOXES = [
     [-180.0, -66.56, -70.44, 66.56],
     # East
     ITEM_BBOX_EAST,
+    # Test
+    ITEM_BBOX_TEST,
 ]
 
 # Split west into two polygons as propsoed by the GeoJSON spec as it crosses the antimeridian
@@ -131,16 +135,16 @@ GEOMETRY_WEST = {
     "coordinates": [
         [
             [156.44, 66.56],
-            [180, 66.56],
-            [180, -66.56],
             [156.44, -66.56],
+            [180, -66.56],
+            [180, 66.56],
             [156.44, 66.56],
         ],
         [
             [-180, 66.56],
-            [-70.44, 66.56],
-            [-70.44, -66.56],
             [-180, -66.56],
+            [-70.44, -66.56],
+            [-70.44, 66.56],
             [-180, 66.56],
         ],
     ],
@@ -151,10 +155,23 @@ GEOMETRY_EAST = {
     "coordinates": [
         [
             [-141.56, 66.56],
-            [-8.44, 66.56],
-            [-8.44, -66.56],
             [-141.56, -66.56],
+            [-8.44, -66.56],
+            [-8.44, 66.56],
             [-141.56, 66.56],
+        ]
+    ],
+}
+# Test
+GEOMETRY_TEST = {
+    "type": "Polygon",
+    "coordinates": [
+        [
+            [-156.06, 66.56],
+            [-156.06, -66.56],
+            [-22.94, -66.56],
+            [-22.94, 66.56],
+            [-156.06, 66.56],
         ]
     ],
 }

@@ -70,6 +70,7 @@ TEST_ITEMS: List[Dict[str, Any]] = [
     {
         "name": "OR_GLM-L2-LCFA_G17_s20182831047000_e20182831047200_c20182831047223",
         "appendctime": True,
+        "test": True,
     },
     {
         "name": "OR_GLM-L2-LCFA_G17_s20200160612000_e20200160612110_c20200160612335",
@@ -108,7 +109,9 @@ class StacTest(unittest.TestCase):
                 self.assertEqual(summaries["instruments"], ["FM1", "FM2"])
                 self.assertEqual(summaries["gsd"], [8000])
                 self.assertEqual(summaries["processing:level"], ["L2"])
-                self.assertEqual(summaries["goes:orbital-slot"], ["West", "East"])
+                self.assertEqual(
+                    summaries["goes:orbital-slot"], ["West", "East", "Test"]
+                )
 
                 self.assertTrue("item_assets" in collection_dict)
                 assets: Dict[str, Dict[str, Any]] = collection_dict["item_assets"]
@@ -151,6 +154,7 @@ class StacTest(unittest.TestCase):
                 appendctime: bool = (
                     test_data["appendctime"] if "appendctime" in test_data else False
                 )
+                goes_test: bool = test_data["test"] if "test" in test_data else False
 
                 collection: Optional[Collection] = None
                 if "collection" in test_data:
@@ -163,6 +167,8 @@ class StacTest(unittest.TestCase):
                     shutil.copyfile(src_data_file, dest_data_file)
 
                     del test_data["name"]
+                    if "test" in test_data:
+                        del test_data["test"]
                     if "id" in test_data:
                         del test_data["id"]
                     test_data["asset_href"] = dest_data_file
@@ -195,15 +201,11 @@ class StacTest(unittest.TestCase):
                 self.assertEqual(item.properties["instruments"], [f"FM{instrument}"])
                 self.assertEqual(item.properties["gsd"], 8000)
                 self.assertEqual(item.properties["goes:system-environment"], "OR")
-                if (
-                    id
-                    == "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004_c20210010000030"
-                ):
+                if goes_test:
+                    self.assertEqual(item.properties["goes:orbital-slot"], "Test")
+                elif platform == 16:
                     self.assertEqual(item.properties["goes:orbital-slot"], "East")
-                elif (
-                    id
-                    == "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200_c20221542100217"
-                ):
+                elif platform == 17:
                     self.assertEqual(item.properties["goes:orbital-slot"], "West")
                 else:
                     self.assertTrue("goes:orbital-slot" in item.properties)
@@ -230,13 +232,19 @@ class StacTest(unittest.TestCase):
                         self.assertTrue("table:row_count" in asset)
                         self.assertEqual(asset["table:primary_geometry"], "geometry")
                         self.assertTrue("table:columns" in asset)
-                        hasGeometryCol = False
+                        cols = []
                         for col in asset["table:columns"]:
                             self.assertTrue("name" in col)
                             self.assertTrue("type" in col)
-                            if col["name"] == "geometry":
-                                hasGeometryCol = True
-                        self.assertTrue(hasGeometryCol)
+                            cols.append(col["name"])
+                        # check for geometry column
+                        self.assertIn("geometry", cols)
+                        # check for datetime columns
+                        if key == "geoparquet_flashes":
+                            self.assertIn("time_of_first_event", cols)
+                            self.assertIn("time_of_last_event", cols)
+                        else:
+                            self.assertIn("time", cols)
 
                 # Check netCDF asset
                 if nonetcdf:

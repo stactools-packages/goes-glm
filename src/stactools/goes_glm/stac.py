@@ -232,17 +232,9 @@ def create_item(
             slot_str = dataset.orbital_slot.replace("-", "_")
             slot = constants.OrbitalSlot[slot_str]
         except KeyError:
-            logger.warning(
-                f"Found 'GOES_Text' as orbital identifier. Guessing that this is {platform}."
+            raise Exception(
+                f"The value for 'orbital_slot' is invalid: {dataset.orbital_slot}"
             )
-            if platform == constants.Platforms.G16:
-                slot = constants.OrbitalSlot.GOES_East
-            elif platform == constants.Platforms.G17:
-                slot = constants.OrbitalSlot.GOES_West
-            else:
-                raise Exception(
-                    f"The value for 'orbital_slot' is invalid: {dataset.orbital_slot}"
-                )
 
         properties = {
             "start_datetime": dataset.time_coverage_start,
@@ -264,6 +256,9 @@ def create_item(
         elif slot == constants.OrbitalSlot.GOES_West:
             bbox = constants.ITEM_BBOX_WEST
             geometry = constants.GEOMETRY_WEST
+        elif slot == constants.OrbitalSlot.GOES_Test:
+            bbox = constants.ITEM_BBOX_TEST
+            geometry = constants.GEOMETRY_TEST
         else:
             bbox = None
             geometry = None

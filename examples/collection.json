@@ -17,6 +17,12 @@
       "title": "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200_c20221542100217"
     },
     {
+      "rel": "item",
+      "href": "./item3.json",
+      "type": "application/geo+json",
+      "title": "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200_c20221542100217"
+    },
+    {
       "rel": "root",
       "href": "./collection.json",
       "type": "application/json",
@@ -127,6 +133,12 @@
           -66.56,
           -8.44,
           66.56
+        ],
+        [
+          -156.06,
+          -66.56,
+          -22.94,
+          66.56
         ]
       ]
     },
@@ -187,7 +199,8 @@
     ],
     "goes:orbital-slot": [
       "West",
-      "East"
+      "East",
+      "Test"
     ]
   }
 }
