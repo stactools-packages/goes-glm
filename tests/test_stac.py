@@ -208,7 +208,7 @@ class StacTest(unittest.TestCase):
                 elif platform == 17:
                     self.assertEqual(item.properties["goes:orbital-slot"], "West")
                 else:
-                    self.assertEqual("goes:orbital-slot" in item.properties)
+                    self.assertTrue("goes:orbital-slot" in item.properties)
                 self.assertEqual(item.properties["proj:epsg"], 4326)
                 self.assertEqual(item.properties["processing:level"], "L2")
 

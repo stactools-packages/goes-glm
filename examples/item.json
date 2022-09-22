@@ -1,7 +1,7 @@
 {
   "type": "Feature",
   "stac_version": "1.0.0",
-  "id": "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004_c20210010000030",
+  "id": "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004",
   "properties": {
     "start_datetime": "2020-12-31T23:59:40.0Z",
     "end_datetime": "2021-01-01T00:00:00.4Z",
@@ -45,16 +45,16 @@
           66.56
         ],
         [
-          -8.44,
-          66.56
-        ],
-        [
-          -8.44,
-          -66.56
-        ],
-        [
           -141.56,
           -66.56
+        ],
+        [
+          -8.44,
+          -66.56
+        ],
+        [
+          -8.44,
+          66.56
         ],
         [
           -141.56,
@@ -666,7 +666,7 @@
     "https://stac-extensions.github.io/processing/v1.1.0/schema.json",
     "https://stac-extensions.github.io/projection/v1.0.0/schema.json",
     "https://stac-extensions.github.io/table/v1.2.0/schema.json",
-    "https://stac-extensions.github.io/datacube/v2.0.0/schema.json"
+    "https://stac-extensions.github.io/datacube/v2.1.0/schema.json"
   ],
   "collection": "goes-glm"
 }
