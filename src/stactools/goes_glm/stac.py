@@ -107,7 +107,8 @@ def create_collection(
         catalog_type=CatalogType.RELATIVE_PUBLISHED,
     )
 
-    collection.add_link(Link(target=license, rel=RelType.LICENSE, title="License"))
+    if license is not None:
+        collection.add_link(Link(target=license, rel=RelType.LICENSE, title="License"))
     collection.add_link(constants.LINK_LANDING_PAGE)
     collection.add_link(constants.LINK_USER_GUIDE_MAIN)
     collection.add_link(constants.LINK_USER_GUIDE_L2_PRODUCTS)
