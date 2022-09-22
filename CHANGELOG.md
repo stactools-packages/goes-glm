@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - New option `fixnetcdf` for Item creation (see issue [#17](https://github.com/stactools-packages/goes-glm/issues/17) for details)
 - New option `appendctime` for Item creation (see issue [#19](https://github.com/stactools-packages/goes-glm/issues/19) for details)
+- Handle GOES-Test correctly
 
 ### Deprecated
 
@@ -23,7 +24,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Handle missing `...frame_time_offset...` variables correctly
 - Handle inconsistencies in the `..._count` variables better
-- Don't throw an error if the orbital slot is GOES-Test
 - Handle netCDF files with no events/flashes correctly
 
 ## [0.1.0]
