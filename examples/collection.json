@@ -198,7 +198,7 @@
     "processing:level": [
       "L2"
     ],
-    "goes:orbital-slot": [
+    "goes:orbital_slot": [
       "West",
       "East",
       "Test"

@@ -110,7 +110,7 @@ class StacTest(unittest.TestCase):
                 self.assertEqual(summaries["gsd"], [8000])
                 self.assertEqual(summaries["processing:level"], ["L2"])
                 self.assertEqual(
-                    summaries["goes:orbital-slot"], ["West", "East", "Test"]
+                    summaries["goes:orbital_slot"], ["West", "East", "Test"]
                 )
 
                 self.assertTrue("item_assets" in collection_dict)
@@ -200,15 +200,15 @@ class StacTest(unittest.TestCase):
                 instrument = platform - 15
                 self.assertEqual(item.properties["instruments"], [f"FM{instrument}"])
                 self.assertEqual(item.properties["gsd"], 8000)
-                self.assertEqual(item.properties["goes:system-environment"], "OR")
+                self.assertEqual(item.properties["goes:system_environment"], "OR")
                 if goes_test:
-                    self.assertEqual(item.properties["goes:orbital-slot"], "Test")
+                    self.assertEqual(item.properties["goes:orbital_slot"], "Test")
                 elif platform == 16:
-                    self.assertEqual(item.properties["goes:orbital-slot"], "East")
+                    self.assertEqual(item.properties["goes:orbital_slot"], "East")
                 elif platform == 17:
-                    self.assertEqual(item.properties["goes:orbital-slot"], "West")
+                    self.assertEqual(item.properties["goes:orbital_slot"], "West")
                 else:
-                    self.assertTrue("goes:orbital-slot" in item.properties)
+                    self.assertTrue("goes:orbital_slot" in item.properties)
                 self.assertEqual(item.properties["proj:epsg"], 4326)
                 self.assertEqual(item.properties["processing:level"], "L2")
 

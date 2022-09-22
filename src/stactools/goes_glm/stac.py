@@ -1,4 +1,5 @@
 import logging
+import math
 import os
 import re
 from datetime import datetime, timezone
@@ -87,7 +88,7 @@ def create_collection(
             "instruments": constants.INSTRUMENTS,
             "gsd": [constants.RESOLUTION],
             "processing:level": [constants.PROCESSING_LEVEL],
-            "goes:orbital-slot": [e.value for e in constants.OrbitalSlot],
+            "goes:orbital_slot": [e.value for e in constants.OrbitalSlot],
         }
     )
 
@@ -247,8 +248,8 @@ def create_item(
             "gsd": constants.RESOLUTION,
             "processing:level": constants.PROCESSING_LEVEL,
             "processing:facility": dataset.production_site,
-            "goes:orbital-slot": slot,
-            "goes:system-environment": sys_env,
+            "goes:orbital_slot": slot,
+            "goes:system_environment": sys_env,
         }
 
         if slot == constants.OrbitalSlot.GOES_East:
@@ -266,16 +267,27 @@ def create_item(
 
         centroid = {}
         for key, var in dataset.variables.items():
-            if len(var.dimensions) != 0:
+            if len(var.dimensions) != 0 or var.name == "product_time":
                 continue
 
             ma = var[...]
-            if var.name == "lat_field_of_view":
-                centroid["lat"] = ma.tolist()
-            elif var.name == "lon_field_of_view":
-                centroid["lon"] = ma.tolist()
-            elif ma.count() > 0:
-                properties[f"goes-glm:{var.name}"] = ma.tolist()
+            if ma.count() == 1:
+                val = ma.tolist()
+                name = f"goes:{var.name}"
+                if var.name == "lat_field_of_view":
+                    centroid["lat"] = val
+                elif var.name == "lon_field_of_view":
+                    centroid["lon"] = val
+                elif var.name.endswith("_count") or var.name == "yaw_flip_flag":
+                    val = val
+                    if val >= 0:
+                        properties[name] = val
+                elif var.name.startswith("nominal_") or var.name.startswith("precent_"):
+                    val = val
+                    if not math.isclose(val, -999.0):
+                        properties[name] = val
+                else:
+                    properties[name] = val
 
         item = Item(
             stac_extensions=[
