@@ -17,15 +17,19 @@
   - [table](https://github.com/stac-extensions/table/) (for geoparquet only)
 - Extra fields:
   - Prefix `goes:`: As defined in the [GOES extension](https://github.com/stac-extensions/goes/).
-    All variables with valid scalar values / without dimensions are added to the Item properties with a `goes:` prefix.
-    The variable name is used as the property key after the prefix, e.g. `goes:event_count`.
+    All variables with valid scalar values / without dimensions are added to
+    the Item properties with a `goes:` prefix. The variable name is used as
+    the property key after the prefix, e.g. `goes:event_count`.
 
-A stactools package for the Geostationary Lightning Mapper (GLM) dataset, which is on the GOES-16/R and GOES-17/S satellites.
-GLM detects all forms of lightning during both day and night, continuously, with a high spatial resolution and detection efficiency.
-Note: This package doesn't support GOES-18/T yet.
+A stactools package for the Geostationary Lightning Mapper (GLM) dataset, which
+is on the GOES-16/R and GOES-17/S satellites. GLM detects all forms of lightning
+during both day and night, continuously, with a high spatial resolution and
+detection efficiency.
 
-This package can generate STAC files from netCDF files and that either link to the original netCDF files or
-to geoparquet files.
+**Note:** This package doesn't support GOES-18/T yet.
+
+This package can generate STAC files from netCDF files and that either link to
+the original netCDF files or to geoparquet files.
 
 ## STAC Examples
 
@@ -85,19 +89,19 @@ We use [pre-commit](https://pre-commit.com/) to check any changes.
 To set up your development environment:
 
 ```shell
-$ pip install -e .
-$ pip install -r requirements-dev.txt
-$ pre-commit install
+pip install -e .
+pip install -r requirements-dev.txt
+pre-commit install
 ```
 
 To check all files:
 
 ```shell
-$ pre-commit run --all-files
+pre-commit run --all-files
 ```
 
 To run the tests:
 
 ```shell
-$ pytest -vv
+pytest -vv
 ```

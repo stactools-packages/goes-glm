@@ -2,7 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). This project attempts to match the major and minor versions of [stactools](https://github.com/stac-utils/stactools) and increments the patch number as needed.
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+This project attempts to match the major and minor versions of
+[stactools](https://github.com/stac-utils/stactools) and increments the patch
+number as needed.
 
 ## [Unreleased]
 
@@ -10,8 +13,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- New option `fixnetcdf` for Item creation (see issue [#17](https://github.com/stactools-packages/goes-glm/issues/17) for details)
-- New option `appendctime` for Item creation (see issue [#19](https://github.com/stactools-packages/goes-glm/issues/19) for details)
+- New option `fixnetcdf` for Item creation
+  [#17](https://github.com/stactools-packages/goes-glm/issues/17)
+- New option `appendctime` for Item creation
+  [#19](https://github.com/stactools-packages/goes-glm/issues/19)
 - Handle GOES-Test correctly
 
 ### Changed
@@ -25,7 +30,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Removed
 
-- `goes-glm:product_time` doesn't get exported any longer. Use STAC's native datetime fields instead.
+- `goes-glm:product_time` doesn't get exported any longer.
+  Use STAC's native datetime fields instead.
 
 ### Fixed
 
