@@ -16,6 +16,7 @@ TEST_FILES = [
     "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004_c20210010000030",
     "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200_c20221542100217",
 ]
+LICENSE = "https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ncdc:C01527"
 
 
 class CommandsTest(CliTestCase):
@@ -28,7 +29,8 @@ class CommandsTest(CliTestCase):
             destination = os.path.join(tmp_dir, "collection.json")
 
             result = self.run_command(
-                f"goes-glm create-collection {destination} --start_time 2022-01-01T00:00:00Z"
+                f"goes-glm create-collection {destination} "
+                f"--start_time 2022-01-01T00:00:00Z --license '{LICENSE}'"
             )
 
             self.assertEqual(result.exit_code, 0, msg="\n{}".format(result.output))
@@ -51,6 +53,7 @@ class CommandsTest(CliTestCase):
                 ignore_order=True,
                 exclude_regex_paths=r"root\['links'\]\[\d+\]\['href'\]",
             )
+            print(diff)
             self.assertEqual(diff, {})
 
     def test_create_item(self) -> None:
@@ -96,4 +99,5 @@ class CommandsTest(CliTestCase):
                         ignore_order=True,
                         exclude_regex_paths=r"root\['(assets|links)'\]\[[\w']+\]\['href'\]",
                     )
+                    print(diff)
                     self.assertEqual(diff, {})
