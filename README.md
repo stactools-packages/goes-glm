@@ -11,7 +11,7 @@
   - <https://ghrc.nsstc.nasa.gov/lightning/overview_glm.html>
 - STAC extensions used:
   - [datacube](https://github.com/stac-extensions/datacube/) (for netCDF only)
-  - [GOES](https://github.com/stac-extensions/goes/) (unreleased)
+  - [GOES](https://github.com/stac-extensions/goes/)
   - [processing](https://github.com/stac-extensions/processing/)
   - [proj](https://github.com/stac-extensions/projection/)
   - [table](https://github.com/stac-extensions/table/) (for geoparquet only)
