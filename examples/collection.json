@@ -8,19 +8,19 @@
       "rel": "item",
       "href": "./item.json",
       "type": "application/geo+json",
-      "title": "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004_c20210010000030"
+      "title": "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004"
     },
     {
       "rel": "item",
       "href": "./item2.json",
       "type": "application/geo+json",
-      "title": "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200_c20221542100217"
+      "title": "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200"
     },
     {
       "rel": "item",
       "href": "./item3.json",
       "type": "application/geo+json",
-      "title": "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200_c20221542100217"
+      "title": "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200"
     },
     {
       "rel": "root",
@@ -62,6 +62,7 @@
     }
   ],
   "stac_extensions": [
+    "https://stac-extensions.github.io/goes/v1.0.0/schema.json",
     "https://stac-extensions.github.io/processing/v1.1.0/schema.json",
     "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
     "https://stac-extensions.github.io/table/v1.2.0/schema.json",
@@ -197,7 +198,7 @@
     "processing:level": [
       "L2"
     ],
-    "goes:orbital-slot": [
+    "goes:orbital_slot": [
       "West",
       "East",
       "Test"

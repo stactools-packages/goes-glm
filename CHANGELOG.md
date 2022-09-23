@@ -6,11 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [0.2.0]
+
 ### Added
 
 - New option `fixnetcdf` for Item creation (see issue [#17](https://github.com/stactools-packages/goes-glm/issues/17) for details)
 - New option `appendctime` for Item creation (see issue [#19](https://github.com/stactools-packages/goes-glm/issues/19) for details)
 - Handle GOES-Test correctly
+
+### Changed
+
+- Use snake case instead of kebab case in all `goes:` field names
+- `goes-glm:` prefiexed fields use now the `goes:` prefix
 
 ### Deprecated
 
@@ -18,17 +25,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Removed
 
-- Nothing.
+- `goes-glm:product_time` doesn't get exported any longer. Use STAC's native datetime fields instead.
 
 ### Fixed
 
 - Handle missing `...frame_time_offset...` variables correctly
 - Handle inconsistencies in the `..._count` variables better
 - Handle netCDF files with no events/flashes correctly
+- Added GOES extension in `stac_extensions`
 
 ## [0.1.0]
 
 - First release
 
 [Unreleased]: <https://github.com/stactools-packages/goes-glm/tree/main/>
+[0.2.0]: <https://github.com/stactools-packages/goes-glm/tree/v0.2.0/>
 [0.1.0]: <https://github.com/stactools-packages/goes-glm/tree/v0.1.0/>
