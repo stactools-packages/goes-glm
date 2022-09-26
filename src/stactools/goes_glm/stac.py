@@ -282,7 +282,7 @@ def create_item(
                     val = val
                     if val >= 0:
                         properties[name] = val
-                elif var.name.startswith("nominal_") or var.name.startswith("precent_"):
+                elif var.name.startswith("nominal_") or var.name.startswith("percent_"):
                     val = val
                     if not math.isclose(val, -999.0):
                         properties[name] = val
