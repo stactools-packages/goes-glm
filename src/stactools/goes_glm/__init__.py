@@ -14,4 +14,4 @@ def register_plugin(registry: Registry) -> None:
     registry.register_subcommand(commands.create_goesglm_command)
 
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"

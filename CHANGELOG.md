@@ -9,6 +9,16 @@ number as needed.
 
 ## [Unreleased]
 
+## [0.2.1]
+
+### Changed
+
+- Updated to latest stactools-packages template (updates dependencies, etc.)
+
+### Fixed
+
+- Fixed a typo in the variable detection
+
 ## [0.2.0]
 
 ### Added
@@ -45,5 +55,6 @@ number as needed.
 - First release
 
 [Unreleased]: <https://github.com/stactools-packages/goes-glm/tree/main/>
+[0.2.1]: <https://github.com/stactools-packages/goes-glm/tree/v0.2.1/>
 [0.2.0]: <https://github.com/stactools-packages/goes-glm/tree/v0.2.0/>
 [0.1.0]: <https://github.com/stactools-packages/goes-glm/tree/v0.1.0/>
