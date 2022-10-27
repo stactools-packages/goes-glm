@@ -122,7 +122,6 @@ def create_asset(
         dict: Asset Object for the geoparquet file
     """
     # create a list of points
-    print("here!", create_parquet)
     geometries = []
     count_col = f"{type}_count"
     count = dataset.variables[count_col][...].tolist()
