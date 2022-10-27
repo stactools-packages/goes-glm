@@ -3,7 +3,7 @@ import math
 import os
 import re
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Dict, Optional
 
 from dateutil.parser import isoparse
 from netCDF4 import Dataset
@@ -166,7 +166,7 @@ def create_item(
     nonetcdf: bool = False,
     fixnetcdf: bool = False,
     appendctime: bool = False,
-    geoparquet_hrefs: Optional[dict[str, str]] = None,
+    geoparquet_hrefs: Optional[Dict[str, str]] = None,
 ) -> Item:
     """Create a STAC Item
 
