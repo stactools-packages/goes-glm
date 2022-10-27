@@ -311,29 +311,8 @@ def create_item(
 
         if not nogeoparquet:
             if geoparquet_hrefs:
-                events_href = geoparquet_hrefs[constants.PARQUET_KEY_EVENTS]
-                flashes_href = geoparquet_hrefs[constants.PARQUET_KEY_FLASHES]
-                groups_href = geoparquet_hrefs[constants.PARQUET_KEY_GROUPS]
-                assets = {
-                    constants.PARQUET_KEY_EVENTS: parquet.create_asset_from_geoparquet(
-                        pyarrow.parquet.ParquetFile(events_href),
-                        events_href,
-                        constants.PARQUET_TITLE_EVENTS,
-                        constants.PARQUET_TABLE_COLUMNS_EVENTS,
-                    ),
-                    constants.PARQUET_KEY_FLASHES: parquet.create_asset_from_geoparquet(
-                        pyarrow.parquet.ParquetFile(flashes_href),
-                        flashes_href,
-                        constants.PARQUET_TITLE_FLASHES,
-                        constants.PARQUET_TABLE_COLUMNS_FLASHES,
-                    ),
-                    constants.PARQUET_KEY_GROUPS: parquet.create_asset_from_geoparquet(
-                        pyarrow.parquet.ParquetFile(groups_href),
-                        groups_href,
-                        constants.PARQUET_TITLE_GROUPS,
-                        constants.PARQUET_TABLE_COLUMNS_GROUPS,
-                    ),
-                }
+                target_folder = os.path.dirname(asset_href)
+                assets = parquet.convert(dataset, target_folder, create_parquet=False)
             else:
                 target_folder = os.path.dirname(asset_href)
                 assets = parquet.convert(dataset, target_folder)
