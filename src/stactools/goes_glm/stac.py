@@ -3,10 +3,11 @@ import math
 import os
 import re
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Dict, Optional
 
 from dateutil.parser import isoparse
 from netCDF4 import Dataset
+import pyarrow.parquet
 from pystac import (
     Asset,
     CatalogType,
@@ -165,6 +166,7 @@ def create_item(
     nonetcdf: bool = False,
     fixnetcdf: bool = False,
     appendctime: bool = False,
+    geoparquet_hrefs: Optional[Dict[str, str]] = None,
 ) -> Item:
     """Create a STAC Item
 
@@ -308,8 +310,12 @@ def create_item(
             proj.centroid = centroid
 
         if not nogeoparquet:
-            target_folder = os.path.dirname(asset_href)
-            assets = parquet.convert(dataset, target_folder)
+            if geoparquet_hrefs:
+                target_folder = os.path.dirname(asset_href)
+                assets = parquet.convert(dataset, target_folder, create_parquet=False)
+            else:
+                target_folder = os.path.dirname(asset_href)
+                assets = parquet.convert(dataset, target_folder)
             for key, asset_dict in assets.items():
                 asset = Asset.from_dict(asset_dict)
                 item.add_asset(key, asset)

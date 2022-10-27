@@ -7,13 +7,14 @@ from typing import Any, Dict, List, Optional
 from geopandas import GeoDataFrame, GeoSeries
 from netCDF4 import Dataset
 from shapely.geometry import Point
+import pyarrow.parquet
 
 from . import constants
 
 logger = logging.getLogger(__name__)
 
 
-def convert(dataset: Dataset, dest_folder: str) -> Dict[str, Dict[str, Any]]:
+def convert(dataset: Dataset, dest_folder: str, create_parquet=True) -> Dict[str, Dict[str, Any]]:
     """
     Converts a netCDF dataset to three geoparquet files (for events, flashes
     and groups) in the given folder.
@@ -28,13 +29,13 @@ def convert(dataset: Dataset, dest_folder: str) -> Dict[str, Dict[str, Any]]:
         dict: Asset Objects
     """
     assets: Dict[str, Dict[str, Any]] = {}
-    assets[constants.PARQUET_KEY_EVENTS] = create_event(dataset, dest_folder)
-    assets[constants.PARQUET_KEY_FLASHES] = create_flashes(dataset, dest_folder)
-    assets[constants.PARQUET_KEY_GROUPS] = create_groups(dataset, dest_folder)
+    assets[constants.PARQUET_KEY_EVENTS] = create_event(dataset, dest_folder, create_parquet=create_parquet)
+    assets[constants.PARQUET_KEY_FLASHES] = create_flashes(dataset, dest_folder, create_parquet=create_parquet)
+    assets[constants.PARQUET_KEY_GROUPS] = create_groups(dataset, dest_folder, create_parquet=create_parquet)
     return assets
 
 
-def create_event(dataset: Dataset, dest_folder: str) -> Dict[str, Any]:
+def create_event(dataset: Dataset, dest_folder: str, create_parquet=True) -> Dict[str, Any]:
     """
     Creates geoparquet file from a netCDF Dataset for the events.
 
@@ -46,10 +47,10 @@ def create_event(dataset: Dataset, dest_folder: str) -> Dict[str, Any]:
     """
     file = os.path.join(dest_folder, "events.parquet")
     cols = ["lat", "lon", "id", "time_offset", "energy", "parent_group_id"]
-    return create_asset(dataset, file, "event", cols, constants.PARQUET_TITLE_EVENTS)
+    return create_asset(dataset, file, "event", cols, constants.PARQUET_TITLE_EVENTS, create_parquet=create_parquet)
 
 
-def create_flashes(dataset: Dataset, dest_folder: str) -> Dict[str, Any]:
+def create_flashes(dataset: Dataset, dest_folder: str, create_parquet=True) -> Dict[str, Any]:
     """
     Creates geoparquet file from a netCDF Dataset for the flashes.
 
@@ -72,10 +73,10 @@ def create_flashes(dataset: Dataset, dest_folder: str) -> Dict[str, Any]:
         "energy",
         "quality_flag",
     ]
-    return create_asset(dataset, file, "flash", cols, constants.PARQUET_TITLE_FLASHES)
+    return create_asset(dataset, file, "flash", cols, constants.PARQUET_TITLE_FLASHES, create_parquet=create_parquet)
 
 
-def create_groups(dataset: Dataset, dest_folder: str) -> Dict[str, Any]:
+def create_groups(dataset: Dataset, dest_folder: str, create_parquet=True) -> Dict[str, Any]:
     """
     Creates geoparquet file from a netCDF Dataset for the groups.
 
@@ -97,11 +98,11 @@ def create_groups(dataset: Dataset, dest_folder: str) -> Dict[str, Any]:
         "quality_flag",
         "parent_flash_id",
     ]
-    return create_asset(dataset, file, "group", cols, constants.PARQUET_TITLE_GROUPS)
+    return create_asset(dataset, file, "group", cols, constants.PARQUET_TITLE_GROUPS, create_parquet=create_parquet)
 
 
 def create_asset(
-    dataset: Dataset, file: str, type: str, cols: List[str], title: str
+    dataset: Dataset, file: str, type: str, cols: List[str], title: str, create_parquet=True,
 ) -> Dict[str, Any]:
     """
     Creates an asset object for a netCDF Dataset with some additional properties.
@@ -154,15 +155,17 @@ def create_asset(
                 "length of {lat_col} ({lat_var_len}) != length of {lon_col} ({lon_var_len})"
             )
 
-    for i in range(0, count):
-        lat = lat_var[i]
-        lon = lon_var[i]
-        geometries.append(Point(lon, lat))
+    if create_parquet:
+        for i in range(0, count):
+            lat = lat_var[i]
+            lon = lon_var[i]
+            geometries.append(Point(lon, lat))
 
     # fill dict with all data in a columnar way
-    table_data = {
-        constants.PARQUET_GEOMETRY_COL: GeoSeries(geometries, crs=constants.SOURCE_CRS)
-    }
+    if create_parquet:
+        table_data = {
+            constants.PARQUET_GEOMETRY_COL: GeoSeries(geometries, crs=constants.SOURCE_CRS)
+        }
     table_cols = [{"name": constants.PARQUET_GEOMETRY_COL, "type": dataset.featureType}]
     for col in cols:
         if col == "lat" or col == "lon":
@@ -179,7 +182,8 @@ def create_asset(
 
         variable = dataset.variables[var_name]
         attrs = variable.ncattrs()
-        data = variable[...].tolist()
+        if create_parquet:
+            data = variable[...].tolist()
         table_col = {
             "name": col,
             "type": str(variable.datatype),  # todo: check data type #11
@@ -205,19 +209,21 @@ def create_asset(
                 )
 
                 new_data: List[Optional[datetime]] = []
-                for val in data:
-                    try:
-                        if milliseconds:
-                            delta = timedelta(milliseconds=val)
-                        else:
-                            delta = timedelta(seconds=val)
-                        new_data.append(base + delta)
-                    except TypeError:
-                        raise Exception(
-                            f"An invalid value '{val}' found in variable '{var_name}'"
-                        )
+                if create_parquet:
+                    for val in data:
+                        try:
+                            if milliseconds:
+                                delta = timedelta(milliseconds=val)
+                            else:
+                                delta = timedelta(seconds=val)
+                            new_data.append(base + delta)
+                        except TypeError:
+                            raise Exception(
+                                f"An invalid value '{val}' found in variable '{var_name}'"
+                            )
 
-                table_data[new_col] = new_data
+                if create_parquet:
+                    table_data[new_col] = new_data
                 col_info = {
                     "name": new_col,
                     "type": constants.PARQUET_DATETIME_COL_TYPE,
@@ -225,12 +231,14 @@ def create_asset(
 
                 table_cols.append(col_info)
 
-        table_data[col] = data
+        if create_parquet:
+            table_data[col] = data
         table_cols.append(table_col)
 
     # Create a geodataframe and store it as geoparquet file
-    dataframe = GeoDataFrame(table_data)
-    dataframe.to_parquet(file, version="2.6")
+    if create_parquet:
+        dataframe = GeoDataFrame(table_data)
+        dataframe.to_parquet(file, version="2.6")
 
     # Create asset dict
     return create_asset_metadata(title, file, table_cols, count)
