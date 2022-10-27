@@ -7,6 +7,7 @@ from typing import Optional
 
 from dateutil.parser import isoparse
 from netCDF4 import Dataset
+import pyarrow.parquet
 from pystac import (
     Asset,
     CatalogType,
@@ -165,6 +166,7 @@ def create_item(
     nonetcdf: bool = False,
     fixnetcdf: bool = False,
     appendctime: bool = False,
+    geoparquet_hrefs: Optional[dict[str, str]] = None,
 ) -> Item:
     """Create a STAC Item
 
@@ -308,8 +310,33 @@ def create_item(
             proj.centroid = centroid
 
         if not nogeoparquet:
-            target_folder = os.path.dirname(asset_href)
-            assets = parquet.convert(dataset, target_folder)
+            if geoparquet_hrefs:
+                events_href = geoparquet_hrefs[constants.PARQUET_KEY_EVENTS]
+                flashes_href = geoparquet_hrefs[constants.PARQUET_KEY_FLASHES]
+                groups_href = geoparquet_hrefs[constants.PARQUET_KEY_GROUPS]
+                assets = {
+                    constants.PARQUET_KEY_EVENTS: parquet.create_asset_from_geoparquet(
+                        pyarrow.parquet.ParquetFile(events_href),
+                        events_href,
+                        constants.PARQUET_TITLE_EVENTS,
+                        constants.PARQUET_TABLE_COLUMNS_EVENTS,
+                    ),
+                    constants.PARQUET_KEY_FLASHES: parquet.create_asset_from_geoparquet(
+                        pyarrow.parquet.ParquetFile(flashes_href),
+                        flashes_href,
+                        constants.PARQUET_TITLE_FLASHES,
+                        constants.PARQUET_TABLE_COLUMNS_FLASHES,
+                    ),
+                    constants.PARQUET_KEY_GROUPS: parquet.create_asset_from_geoparquet(
+                        pyarrow.parquet.ParquetFile(groups_href),
+                        groups_href,
+                        constants.PARQUET_TITLE_GROUPS,
+                        constants.PARQUET_TABLE_COLUMNS_GROUPS,
+                    ),
+                }
+            else:
+                target_folder = os.path.dirname(asset_href)
+                assets = parquet.convert(dataset, target_folder)
             for key, asset_dict in assets.items():
                 asset = Asset.from_dict(asset_dict)
                 item.add_asset(key, asset)

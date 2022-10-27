@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional
 from geopandas import GeoDataFrame, GeoSeries
 from netCDF4 import Dataset
 from shapely.geometry import Point
+import pyarrow.parquet
 
 from . import constants
 
@@ -234,6 +235,12 @@ def create_asset(
 
     # Create asset dict
     return create_asset_metadata(title, file, table_cols, count)
+
+
+def create_asset_from_geoparquet(
+    pf: pyarrow.parquet.ParquetFile, href: str, title, table_columns
+):
+    return create_asset_metadata(title, href, table_columns, pf.metadata.num_rows)
 
 
 def create_asset_metadata(

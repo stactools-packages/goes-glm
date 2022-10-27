@@ -275,3 +275,20 @@ class StacTest(unittest.TestCase):
                         self.assertTrue("dimensions" in var)
                         self.assertTrue("type" in var)
                         self.assertTrue("description" in var)
+
+
+def test_geoparquet_hrefs():
+    asset_href = "./tests/data-files/OR_GLM-L2-LCFA_G16_s20181591447400_e20181591448000_c20181591448028.nc"
+    geoparquet_hrefs = {
+       "geoparquet_flashes":  "./tests/data-files/OR_GLM-L2-LCFA_G16_s20181591447400_e20181591448000_c20181591448028-flashes.parquet",
+       "geoparquet_groups": "./tests/data-files/OR_GLM-L2-LCFA_G16_s20181591447400_e20181591448000_c20181591448028-groups.parquet",
+       "geoparquet_events": "./tests/data-files/OR_GLM-L2-LCFA_G16_s20181591447400_e20181591448000_c20181591448028-events.parquet",
+    }
+
+    result = stac.create_item(asset_href, geoparquet_hrefs=geoparquet_hrefs)
+    expected = stac.create_item(asset_href, geoparquet_hrefs=geoparquet_hrefs)
+
+    for k, v in expected.assets.items():
+        v.href = result.assets[k].href
+
+    assert result.to_dict() == expected.to_dict()
