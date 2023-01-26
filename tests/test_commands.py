@@ -16,7 +16,10 @@ TEST_FILES = [
     "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200_c20221542100217",
     "OR_GLM-L2-LCFA_G18_s20230261900000_e20230261900200_c20230261900213",
 ]
-LICENSE = "https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ncdc:C01527"
+LICENSE = (
+    "https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso"
+    "?id=gov.noaa.ncdc:C01527"
+)
 
 
 class CommandsTest(CliTestCase):
