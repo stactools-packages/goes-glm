@@ -69,6 +69,7 @@ def create_collection(
         "GOES",
         "GOES-16",
         "GOES-17",
+        "GOES-18",
         "GLM",
         "Atmosphere",
         "Environmental",
@@ -223,8 +224,6 @@ def create_item(
 
         try:
             platform = constants.Platforms[dataset.platform_ID]
-            if platform == constants.Platforms.G18:
-                raise Exception("GOES-18/T is not supported yet")
         except ValueError:
             raise Exception(
                 f"The dataset contains an invalid platform identifier: {dataset.platform_ID}"

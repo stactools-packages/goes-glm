@@ -73,8 +73,8 @@ CONSTELLATION = "GOES"
 PLATFORM_R = "GOES-16"
 PLATFORM_S = "GOES-17"
 PLATFORM_T = "GOES-18"
-PLATFORMS = [PLATFORM_R, PLATFORM_S]  # We can add PLATFORM_T at some point
-INSTRUMENTS = ["FM1", "FM2"]  # We can add FM3 for GOES-18 at some point
+PLATFORMS = [PLATFORM_R, PLATFORM_S, PLATFORM_T]
+INSTRUMENTS = ["FM1", "FM2", "FM3"]
 
 
 class Platforms(str, enum.Enum):

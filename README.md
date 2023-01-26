@@ -22,11 +22,9 @@
     the property key after the prefix, e.g. `goes:event_count`.
 
 A stactools package for the Geostationary Lightning Mapper (GLM) dataset, which
-is on the GOES-16/R and GOES-17/S satellites. GLM detects all forms of lightning
-during both day and night, continuously, with a high spatial resolution and
-detection efficiency.
-
-**Note:** This package doesn't support GOES-18/T yet.
+is on the GOES-16/R, GOES-17/S, and GOES-18/T satellites. GLM detects all forms
+of lightning during both day and night, continuously, with a high spatial
+resolution and detection efficiency.
 
 This package can generate STAC files from netCDF files and that either link to
 the original netCDF files or to geoparquet files.
@@ -37,6 +35,7 @@ the original netCDF files or to geoparquet files.
 - [Item (GOES-16/R)](examples/item.json)
 - [Item (GOES-17/S)](examples/item2.json)
 - [Item (GOES-17/S (Test) before drifting to the final location)](examples/item3.json)
+- [Item (GOES-18/T)](examples/item4.json)
 - [Browse the example in a human-readable form](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/stactools-packages/goes-glm/main/examples/collection.json)
 
 ## Installation

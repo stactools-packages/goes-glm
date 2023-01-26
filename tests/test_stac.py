@@ -77,6 +77,7 @@ TEST_ITEMS: List[Dict[str, Any]] = [
         "name": "OR_GLM-L2-LCFA_G17_s20200160612000_e20200160612110_c20200160612335",
         "appendctime": True,
     },
+    {"name": "OR_GLM-L2-LCFA_G18_s20230261900000_e20230261900200_c20230261900213"},
 ]
 
 
@@ -100,8 +101,8 @@ def test_create_collection(options: Dict[str, Any]) -> None:
     summaries = collection_dict["summaries"]
     assert summaries["mission"] == ["GOES"]
     assert summaries["constellation"] == ["GOES"]
-    assert summaries["platform"] == ["GOES-16", "GOES-17"]
-    assert summaries["instruments"] == ["FM1", "FM2"]
+    assert summaries["platform"] == ["GOES-16", "GOES-17", "GOES-18"]
+    assert summaries["instruments"] == ["FM1", "FM2", "FM3"]
     assert summaries["gsd"] == [8000]
     assert summaries["processing:level"] == ["L2"]
     assert summaries["goes:orbital_slot"] == ["West", "East", "Test"]
@@ -168,8 +169,10 @@ def test_create_item(options: Dict[str, Any]) -> None:
         platform = 16
     elif id.find("_G17_") != -1:
         platform = 17
-    else:
+    elif id.find("_G18_") != -1:
         platform = 18
+    else:
+        raise ValueError(f"could not parse platform from id: {id}")
 
     assert item is not None
     assert item.id == name if appendctime else id
@@ -193,6 +196,8 @@ def test_create_item(options: Dict[str, Any]) -> None:
     elif platform == 16:
         assert item.properties["goes:orbital_slot"] == "East"
     elif platform == 17:
+        assert item.properties["goes:orbital_slot"] == "West"
+    elif platform == 18:
         assert item.properties["goes:orbital_slot"] == "West"
     else:
         assert "goes:orbital_slot" in item.properties
