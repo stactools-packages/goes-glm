@@ -1,10 +1,10 @@
 {
   "type": "Feature",
   "stac_version": "1.0.0",
-  "id": "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004",
+  "id": "OR_GLM-L2-LCFA_G16_s20181591447400_e20181591448000",
   "properties": {
-    "start_datetime": "2020-12-31T23:59:40.0Z",
-    "end_datetime": "2021-01-01T00:00:00.4Z",
+    "start_datetime": "2018-06-08T14:47:40.0Z",
+    "end_datetime": "2018-06-08T14:48:00.0Z",
     "mission": "GOES",
     "constellation": "GOES",
     "platform": "GOES-16",
@@ -19,21 +19,20 @@
     "goes:lightning_wavelength": 777.3699951171875,
     "goes:group_time_threshold": 0.0,
     "goes:flash_time_threshold": 3.3299999237060547,
-    "goes:event_count": 11236,
-    "goes:group_count": 3706,
-    "goes:flash_count": 179,
+    "goes:event_count": 2707,
+    "goes:group_count": 1169,
+    "goes:flash_count": 71,
     "goes:percent_navigated_L1b_events": 1.0,
-    "goes:yaw_flip_flag": 0,
     "goes:nominal_satellite_subpoint_lat": 0.0,
     "goes:nominal_satellite_height": 35786.0234375,
-    "goes:nominal_satellite_subpoint_lon": -75.19999694824219,
+    "goes:nominal_satellite_subpoint_lon": -75.0,
     "goes:percent_uncorrectable_L0_errors": 0.0,
     "proj:epsg": 4326,
     "proj:centroid": {
       "lat": 0.0,
       "lon": -75.0
     },
-    "datetime": "2020-12-31T23:59:50.200000Z"
+    "datetime": "2018-06-08T14:47:50Z"
   },
   "geometry": {
     "type": "Polygon",
@@ -64,15 +63,27 @@
   },
   "links": [
     {
+      "rel": "root",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "GLM L2 Lightning Detections: Events, Groups, and Flashes"
+    },
+    {
       "rel": "collection",
-      "href": "./collection.json",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "GLM L2 Lightning Detections: Events, Groups, and Flashes"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
       "type": "application/json",
       "title": "GLM L2 Lightning Detections: Events, Groups, and Flashes"
     }
   ],
   "assets": {
     "geoparquet_events": {
-      "href": "events.parquet",
+      "href": "./events.parquet",
       "type": "application/x-parquet",
       "title": "Processed GeoParquet file for events",
       "table:primary_geometry": "geometry",
@@ -94,7 +105,7 @@
           "name": "time_offset",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: event's time of occurrence",
-          "unit": "seconds since 2020-12-31 23:59:40.000"
+          "unit": "milliseconds since 2018-06-08 14:47:40.000"
         },
         {
           "name": "energy",
@@ -108,14 +119,14 @@
           "description": "product-unique lightning group identifier for one or more events"
         }
       ],
-      "table:row_count": 11236,
+      "table:row_count": 2707,
       "roles": [
         "data",
         "cloud-optimized"
       ]
     },
     "geoparquet_flashes": {
-      "href": "flashes.parquet",
+      "href": "./flashes.parquet",
       "type": "application/x-parquet",
       "title": "Processed GeoParquet file for flashes",
       "table:primary_geometry": "geometry",
@@ -137,7 +148,7 @@
           "name": "time_offset_of_first_event",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: time of occurrence of first constituent event in flash",
-          "unit": "seconds since 2020-12-31 23:59:40.000"
+          "unit": "milliseconds since 2018-06-08 14:47:40.000"
         },
         {
           "name": "time_of_last_event",
@@ -147,33 +158,13 @@
           "name": "time_offset_of_last_event",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: time of occurrence of last constituent event in flash",
-          "unit": "seconds since 2020-12-31 23:59:40.000"
-        },
-        {
-          "name": "frame_time_of_first_event",
-          "type": "datetime"
-        },
-        {
-          "name": "frame_time_offset_of_first_event",
-          "type": "int16",
-          "description": "GLM L2+ Lightning Detection: time of occurrence of first constituent event in flash",
-          "unit": "seconds since 2020-12-31 23:59:40.000"
-        },
-        {
-          "name": "frame_time_of_last_event",
-          "type": "datetime"
-        },
-        {
-          "name": "frame_time_offset_of_last_event",
-          "type": "int16",
-          "description": "GLM L2+ Lightning Detection: time of occurrence of last constituent event in flash",
-          "unit": "seconds since 2020-12-31 23:59:40.000"
+          "unit": "milliseconds since 2018-06-08 14:47:40.000"
         },
         {
           "name": "area",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: flash area coverage (pixels containing at least one constituent event only)",
-          "unit": "m2"
+          "unit": "km2"
         },
         {
           "name": "energy",
@@ -187,14 +178,14 @@
           "description": "GLM L2+ Lightning Detection: flash data quality flags"
         }
       ],
-      "table:row_count": 179,
+      "table:row_count": 71,
       "roles": [
         "data",
         "cloud-optimized"
       ]
     },
     "geoparquet_groups": {
-      "href": "groups.parquet",
+      "href": "./groups.parquet",
       "type": "application/x-parquet",
       "title": "Processed GeoParquet file for groups",
       "table:primary_geometry": "geometry",
@@ -216,23 +207,13 @@
           "name": "time_offset",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: mean time of group's constituent events' times of occurrence",
-          "unit": "seconds since 2020-12-31 23:59:40.000"
-        },
-        {
-          "name": "frame_time",
-          "type": "datetime"
-        },
-        {
-          "name": "frame_time_offset",
-          "type": "int16",
-          "description": "GLM L2+ Lightning Detection: mean time of group's constituent events' times of occurrence",
-          "unit": "seconds since 2020-12-31 23:59:40.000"
+          "unit": "milliseconds since 2018-06-08 14:47:40.000"
         },
         {
           "name": "area",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: group area coverage (pixels containing at least one constituent event only)",
-          "unit": "m2"
+          "unit": "km2"
         },
         {
           "name": "energy",
@@ -251,17 +232,17 @@
           "description": "product-unique lightning flash identifier for one or more groups"
         }
       ],
-      "table:row_count": 3706,
+      "table:row_count": 1169,
       "roles": [
         "data",
         "cloud-optimized"
       ]
     },
     "netcdf": {
-      "href": "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004_c20210010000030.nc",
+      "href": "./OR_GLM-L2-LCFA_G16_s20181591447400_e20181591448000_c20181591448028.nc",
       "type": "application/netcdf",
       "title": "Original netCDF 4 file",
-      "created": "2021-01-01T00:00:03.0Z",
+      "created": "2018-06-08T14:48:02.8Z",
       "cube:dimensions": {
         "number_of_flashes": {
           "type": "number_of_flashes",
@@ -287,8 +268,8 @@
         "number_of_time_bounds": {
           "type": "number_of_time_bounds",
           "extent": [
-            662731180.0,
-            662731200.469121
+            581741260.0,
+            581741280.0
           ]
         },
         "number_of_field_of_view_bounds": {
@@ -320,7 +301,7 @@
           ],
           "type": "data",
           "description": "event's time of occurrence",
-          "unit": "seconds since 2020-12-31 23:59:40.000",
+          "unit": "milliseconds since 2018-06-08 14:47:40.000",
           "axis": "T"
         },
         "event_lat": {
@@ -369,16 +350,7 @@
           ],
           "type": "data",
           "description": "mean time of group's constituent events' times of occurrence",
-          "unit": "seconds since 2020-12-31 23:59:40.000",
-          "axis": "T"
-        },
-        "group_frame_time_offset": {
-          "dimensions": [
-            "number_of_groups"
-          ],
-          "type": "data",
-          "description": "mean time of group's constituent events' times of occurrence",
-          "unit": "seconds since 2020-12-31 23:59:40.000",
+          "unit": "milliseconds since 2018-06-08 14:47:40.000",
           "axis": "T"
         },
         "group_lat": {
@@ -405,7 +377,7 @@
           ],
           "type": "auxiliary",
           "description": "group area coverage (pixels containing at least one constituent event only)",
-          "unit": "m2"
+          "unit": "km2"
         },
         "group_energy": {
           "dimensions": [
@@ -442,7 +414,7 @@
           ],
           "type": "data",
           "description": "time of occurrence of first constituent event in flash",
-          "unit": "seconds since 2020-12-31 23:59:40.000",
+          "unit": "milliseconds since 2018-06-08 14:47:40.000",
           "axis": "T"
         },
         "flash_time_offset_of_last_event": {
@@ -451,24 +423,7 @@
           ],
           "type": "data",
           "description": "time of occurrence of last constituent event in flash",
-          "unit": "seconds since 2020-12-31 23:59:40.000"
-        },
-        "flash_frame_time_offset_of_first_event": {
-          "dimensions": [
-            "number_of_flashes"
-          ],
-          "type": "data",
-          "description": "time of occurrence of first constituent event in flash",
-          "unit": "seconds since 2020-12-31 23:59:40.000",
-          "axis": "T"
-        },
-        "flash_frame_time_offset_of_last_event": {
-          "dimensions": [
-            "number_of_flashes"
-          ],
-          "type": "data",
-          "description": "time of occurrence of last constituent event in flash",
-          "unit": "seconds since 2020-12-31 23:59:40.000"
+          "unit": "milliseconds since 2018-06-08 14:47:40.000"
         },
         "flash_lat": {
           "dimensions": [
@@ -494,7 +449,7 @@
           ],
           "type": "auxiliary",
           "description": "flash area coverage (pixels containing at least one constituent event only)",
-          "unit": "m2"
+          "unit": "km2"
         },
         "flash_energy": {
           "dimensions": [

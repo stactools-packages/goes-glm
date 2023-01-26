@@ -1,15 +1,15 @@
 {
   "type": "Feature",
   "stac_version": "1.0.0",
-  "id": "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200",
+  "id": "OR_GLM-L2-LCFA_G18_s20230261900000_e20230261900200",
   "properties": {
-    "start_datetime": "2022-06-03T21:00:00.0Z",
-    "end_datetime": "2022-06-03T21:00:20.0Z",
+    "start_datetime": "2023-01-26T19:00:00.0Z",
+    "end_datetime": "2023-01-26T19:00:20.0Z",
     "mission": "GOES",
     "constellation": "GOES",
-    "platform": "GOES-17",
+    "platform": "GOES-18",
     "instruments": [
-      "FM2"
+      "FM3"
     ],
     "gsd": 8000,
     "processing:level": "L2",
@@ -19,21 +19,21 @@
     "goes:lightning_wavelength": 777.3699951171875,
     "goes:group_time_threshold": 0.0,
     "goes:flash_time_threshold": 3.3299999237060547,
-    "goes:event_count": 1229,
-    "goes:group_count": 811,
-    "goes:flash_count": 117,
+    "goes:event_count": 2394,
+    "goes:group_count": 891,
+    "goes:flash_count": 34,
     "goes:percent_navigated_L1b_events": 1.0,
     "goes:yaw_flip_flag": 0,
     "goes:nominal_satellite_subpoint_lat": 0.0,
     "goes:nominal_satellite_height": 35786.0234375,
-    "goes:nominal_satellite_subpoint_lon": -137.1999969482422,
+    "goes:nominal_satellite_subpoint_lon": -137.0,
     "goes:percent_uncorrectable_L0_errors": 0.0,
     "proj:epsg": 4326,
     "proj:centroid": {
       "lat": 0.0,
       "lon": -137.0
     },
-    "datetime": "2022-06-03T21:00:10Z"
+    "datetime": "2023-01-26T19:00:10Z"
   },
   "geometry": {
     "type": "Polygon",
@@ -86,15 +86,27 @@
   },
   "links": [
     {
+      "rel": "root",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "GLM L2 Lightning Detections: Events, Groups, and Flashes"
+    },
+    {
       "rel": "collection",
-      "href": "./collection.json",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "GLM L2 Lightning Detections: Events, Groups, and Flashes"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
       "type": "application/json",
       "title": "GLM L2 Lightning Detections: Events, Groups, and Flashes"
     }
   ],
   "assets": {
     "geoparquet_events": {
-      "href": "events.parquet",
+      "href": "./events.parquet",
       "type": "application/x-parquet",
       "title": "Processed GeoParquet file for events",
       "table:primary_geometry": "geometry",
@@ -116,7 +128,7 @@
           "name": "time_offset",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: event's time of occurrence",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
+          "unit": "seconds since 2023-01-26 19:00:00.000"
         },
         {
           "name": "energy",
@@ -130,14 +142,14 @@
           "description": "product-unique lightning group identifier for one or more events"
         }
       ],
-      "table:row_count": 1229,
+      "table:row_count": 2394,
       "roles": [
         "data",
         "cloud-optimized"
       ]
     },
     "geoparquet_flashes": {
-      "href": "flashes.parquet",
+      "href": "./flashes.parquet",
       "type": "application/x-parquet",
       "title": "Processed GeoParquet file for flashes",
       "table:primary_geometry": "geometry",
@@ -159,7 +171,7 @@
           "name": "time_offset_of_first_event",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: time of occurrence of first constituent event in flash",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
+          "unit": "seconds since 2023-01-26 19:00:00.000"
         },
         {
           "name": "time_of_last_event",
@@ -169,7 +181,7 @@
           "name": "time_offset_of_last_event",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: time of occurrence of last constituent event in flash",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
+          "unit": "seconds since 2023-01-26 19:00:00.000"
         },
         {
           "name": "frame_time_of_first_event",
@@ -179,7 +191,7 @@
           "name": "frame_time_offset_of_first_event",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: time of occurrence of first constituent event in flash",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
+          "unit": "seconds since 2023-01-26 19:00:00.000"
         },
         {
           "name": "frame_time_of_last_event",
@@ -189,7 +201,7 @@
           "name": "frame_time_offset_of_last_event",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: time of occurrence of last constituent event in flash",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
+          "unit": "seconds since 2023-01-26 19:00:00.000"
         },
         {
           "name": "area",
@@ -209,14 +221,14 @@
           "description": "GLM L2+ Lightning Detection: flash data quality flags"
         }
       ],
-      "table:row_count": 117,
+      "table:row_count": 34,
       "roles": [
         "data",
         "cloud-optimized"
       ]
     },
     "geoparquet_groups": {
-      "href": "groups.parquet",
+      "href": "./groups.parquet",
       "type": "application/x-parquet",
       "title": "Processed GeoParquet file for groups",
       "table:primary_geometry": "geometry",
@@ -238,7 +250,7 @@
           "name": "time_offset",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: mean time of group's constituent events' times of occurrence",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
+          "unit": "seconds since 2023-01-26 19:00:00.000"
         },
         {
           "name": "frame_time",
@@ -248,7 +260,7 @@
           "name": "frame_time_offset",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: mean time of group's constituent events' times of occurrence",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
+          "unit": "seconds since 2023-01-26 19:00:00.000"
         },
         {
           "name": "area",
@@ -273,17 +285,17 @@
           "description": "product-unique lightning flash identifier for one or more groups"
         }
       ],
-      "table:row_count": 811,
+      "table:row_count": 891,
       "roles": [
         "data",
         "cloud-optimized"
       ]
     },
     "netcdf": {
-      "href": "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200_c20221542100217.nc",
+      "href": "./OR_GLM-L2-LCFA_G18_s20230261900000_e20230261900200_c20230261900213.nc",
       "type": "application/netcdf",
       "title": "Original netCDF 4 file",
-      "created": "2022-06-03T21:00:21.7Z",
+      "created": "2023-01-26T19:00:21.3Z",
       "cube:dimensions": {
         "number_of_flashes": {
           "type": "number_of_flashes",
@@ -309,8 +321,8 @@
         "number_of_time_bounds": {
           "type": "number_of_time_bounds",
           "extent": [
-            707562000.0,
-            707562020.0
+            728031600.0,
+            728031620.0
           ]
         },
         "number_of_field_of_view_bounds": {
@@ -342,7 +354,7 @@
           ],
           "type": "data",
           "description": "event's time of occurrence",
-          "unit": "seconds since 2022-06-03 21:00:00.000",
+          "unit": "seconds since 2023-01-26 19:00:00.000",
           "axis": "T"
         },
         "event_lat": {
@@ -391,7 +403,7 @@
           ],
           "type": "data",
           "description": "mean time of group's constituent events' times of occurrence",
-          "unit": "seconds since 2022-06-03 21:00:00.000",
+          "unit": "seconds since 2023-01-26 19:00:00.000",
           "axis": "T"
         },
         "group_frame_time_offset": {
@@ -400,7 +412,7 @@
           ],
           "type": "data",
           "description": "mean time of group's constituent events' times of occurrence",
-          "unit": "seconds since 2022-06-03 21:00:00.000",
+          "unit": "seconds since 2023-01-26 19:00:00.000",
           "axis": "T"
         },
         "group_lat": {
@@ -464,7 +476,7 @@
           ],
           "type": "data",
           "description": "time of occurrence of first constituent event in flash",
-          "unit": "seconds since 2022-06-03 21:00:00.000",
+          "unit": "seconds since 2023-01-26 19:00:00.000",
           "axis": "T"
         },
         "flash_time_offset_of_last_event": {
@@ -473,7 +485,7 @@
           ],
           "type": "data",
           "description": "time of occurrence of last constituent event in flash",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
+          "unit": "seconds since 2023-01-26 19:00:00.000"
         },
         "flash_frame_time_offset_of_first_event": {
           "dimensions": [
@@ -481,7 +493,7 @@
           ],
           "type": "data",
           "description": "time of occurrence of first constituent event in flash",
-          "unit": "seconds since 2022-06-03 21:00:00.000",
+          "unit": "seconds since 2023-01-26 19:00:00.000",
           "axis": "T"
         },
         "flash_frame_time_offset_of_last_event": {
@@ -490,7 +502,7 @@
           ],
           "type": "data",
           "description": "time of occurrence of last constituent event in flash",
-          "unit": "seconds since 2022-06-03 21:00:00.000"
+          "unit": "seconds since 2023-01-26 19:00:00.000"
         },
         "flash_lat": {
           "dimensions": [

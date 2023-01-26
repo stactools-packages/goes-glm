@@ -32,10 +32,10 @@ the original netCDF files or to geoparquet files.
 ## STAC Examples
 
 - [Collection](examples/collection.json)
-- [Item (GOES-16/R)](examples/item.json)
-- [Item (GOES-17/S)](examples/item2.json)
-- [Item (GOES-17/S (Test) before drifting to the final location)](examples/item3.json)
-- [Item (GOES-18/T)](examples/item4.json)
+- [Item (GOES-16/R)](./examples/OR_GLM-L2-LCFA_G16_s20181591447400_e20181591448000/OR_GLM-L2-LCFA_G16_s20181591447400_e20181591448000.json)
+- [Item (GOES-17/S)](./examples/OR_GLM-L2-LCFA_G17_s20200160612000_e20200160612110/OR_GLM-L2-LCFA_G17_s20200160612000_e20200160612110.json)
+- [Item (GOES-17/S (Test) before drifting to the final location)](./examples/OR_GLM-L2-LCFA_G17_s20182831047000_e20182831047200/OR_GLM-L2-LCFA_G17_s20182831047000_e20182831047200.json)
+- [Item (GOES-18/T)](./examples/OR_GLM-L2-LCFA_G18_s20230261900000_e20230261900200/OR_GLM-L2-LCFA_G18_s20230261900000_e20230261900200.json)
 - [Browse the example in a human-readable form](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/stactools-packages/goes-glm/main/examples/collection.json)
 
 ## Installation
