@@ -5,24 +5,6 @@
   "description": "The Lightning Detections: Events, Groups, and Flashes product consists of a hierarchy of earth-located lightning radiant energy measures including events, groups, and flashes. Lightning events are detected by the instrument. Lightning groups are a collection of one or more lightning events that satisfy temporal and spatial coincidence thresholds. Similarly, lightning flashes are a collection of one or more lightning groups that satisfy temporal and spatial coincidence thresholds. The product includes the relationship among lightning events, groups, and flashes, and the area coverage of lightning groups and flashes. The product also includes processing and data quality metadata, and satellite state and location information.",
   "links": [
     {
-      "rel": "item",
-      "href": "./item.json",
-      "type": "application/geo+json",
-      "title": "OR_GLM-L2-LCFA_G16_s20203662359400_e20210010000004"
-    },
-    {
-      "rel": "item",
-      "href": "./item2.json",
-      "type": "application/geo+json",
-      "title": "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200"
-    },
-    {
-      "rel": "item",
-      "href": "./item3.json",
-      "type": "application/geo+json",
-      "title": "OR_GLM-L2-LCFA_G17_s20221542100000_e20221542100200"
-    },
-    {
       "rel": "root",
       "href": "./collection.json",
       "type": "application/json",
@@ -30,7 +12,7 @@
     },
     {
       "rel": "license",
-      "href": "https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ncdc:C01527",
+      "href": "proprietary",
       "title": "License"
     },
     {
@@ -56,8 +38,23 @@
       "href": "https://doi.org/10.7289/V5KH0KK6"
     },
     {
-      "rel": "self",
-      "href": "https://raw.githubusercontent.com/stactools-packages/goes-glm/main/examples/collection.json",
+      "rel": "item",
+      "href": "./OR_GLM-L2-LCFA_G16_s20181591447400_e20181591448000/OR_GLM-L2-LCFA_G16_s20181591447400_e20181591448000.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./OR_GLM-L2-LCFA_G17_s20182831047000_e20182831047200/OR_GLM-L2-LCFA_G17_s20182831047000_e20182831047200.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./OR_GLM-L2-LCFA_G17_s20200160612000_e20200160612110/OR_GLM-L2-LCFA_G17_s20200160612000_e20200160612110.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./OR_GLM-L2-LCFA_G18_s20230261900000_e20230261900200/OR_GLM-L2-LCFA_G18_s20230261900000_e20230261900200.json",
       "type": "application/json"
     }
   ],
@@ -146,7 +143,7 @@
     "temporal": {
       "interval": [
         [
-          "2022-07-01T00:00:00Z",
+          "2023-01-26T20:45:18.067663Z",
           null
         ]
       ]
@@ -158,6 +155,7 @@
     "GOES",
     "GOES-16",
     "GOES-17",
+    "GOES-18",
     "GLM",
     "Atmosphere",
     "Environmental",
@@ -186,11 +184,13 @@
     ],
     "platform": [
       "GOES-16",
-      "GOES-17"
+      "GOES-17",
+      "GOES-18"
     ],
     "instruments": [
       "FM1",
-      "FM2"
+      "FM2",
+      "FM3"
     ],
     "gsd": [
       8000

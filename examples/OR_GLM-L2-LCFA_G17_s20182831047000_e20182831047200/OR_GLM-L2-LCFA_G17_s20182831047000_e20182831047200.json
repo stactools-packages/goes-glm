@@ -63,15 +63,27 @@
   },
   "links": [
     {
+      "rel": "root",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "GLM L2 Lightning Detections: Events, Groups, and Flashes"
+    },
+    {
       "rel": "collection",
-      "href": "./collection.json",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "GLM L2 Lightning Detections: Events, Groups, and Flashes"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
       "type": "application/json",
       "title": "GLM L2 Lightning Detections: Events, Groups, and Flashes"
     }
   ],
   "assets": {
     "geoparquet_events": {
-      "href": "events.parquet",
+      "href": "./events.parquet",
       "type": "application/x-parquet",
       "title": "Processed GeoParquet file for events",
       "table:primary_geometry": "geometry",
@@ -114,7 +126,7 @@
       ]
     },
     "geoparquet_flashes": {
-      "href": "flashes.parquet",
+      "href": "./flashes.parquet",
       "type": "application/x-parquet",
       "title": "Processed GeoParquet file for flashes",
       "table:primary_geometry": "geometry",
@@ -173,7 +185,7 @@
       ]
     },
     "geoparquet_groups": {
-      "href": "groups.parquet",
+      "href": "./groups.parquet",
       "type": "application/x-parquet",
       "title": "Processed GeoParquet file for groups",
       "table:primary_geometry": "geometry",
@@ -227,7 +239,7 @@
       ]
     },
     "netcdf": {
-      "href": "OR_GLM-L2-LCFA_G17_s20182831047000_e20182831047200_c20182831047223.nc",
+      "href": "./OR_GLM-L2-LCFA_G17_s20182831047000_e20182831047200_c20182831047223.nc",
       "type": "application/netcdf",
       "title": "Original netCDF 4 file",
       "created": "2018-10-10T10:47:22.3Z",
