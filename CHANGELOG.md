@@ -9,6 +9,8 @@ number as needed.
 
 ## [Unreleased]
 
+## [0.2.2]
+
 ### Added
 
 - Support for GOES-18 ([#26](https://github.com/stactools-packages/goes-glm/pull/26))
@@ -59,6 +61,7 @@ number as needed.
 - First release
 
 [Unreleased]: <https://github.com/stactools-packages/goes-glm/tree/main/>
-[0.2.1]: <https://github.com/stactools-packages/goes-glm/tree/v0.2.1/>
-[0.2.0]: <https://github.com/stactools-packages/goes-glm/tree/v0.2.0/>
+[0.2.2]: <https://github.com/stactools-packages/goes-glm/compare/v0.2.1..v0.2.2>
+[0.2.1]: <https://github.com/stactools-packages/goes-glm/compare/v0.2.0..v0.2.1>
+[0.2.0]: <https://github.com/stactools-packages/goes-glm/compare/v0.1.0..v0.2.0>
 [0.1.0]: <https://github.com/stactools-packages/goes-glm/tree/v0.1.0/>
