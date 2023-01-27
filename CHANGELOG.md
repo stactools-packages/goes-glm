@@ -9,6 +9,12 @@ number as needed.
 
 ## [Unreleased]
 
+## [0.2.3]
+
+### Fixed
+
+- Metadata in setup.cfg ([#28](https://github.com/stactools-packages/goes-glm/pull/28))
+
 ## [0.2.2]
 
 ### Added
