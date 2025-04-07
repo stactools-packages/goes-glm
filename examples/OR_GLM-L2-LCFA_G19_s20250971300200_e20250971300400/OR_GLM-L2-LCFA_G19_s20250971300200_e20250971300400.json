@@ -8,91 +8,72 @@
     "https://stac-extensions.github.io/table/v1.2.0/schema.json",
     "https://stac-extensions.github.io/datacube/v2.1.0/schema.json"
   ],
-  "id": "OR_GLM-L2-LCFA_G17_s20200160612000_e20200160612110",
+  "id": "OR_GLM-L2-LCFA_G19_s20250971300200_e20250971300400",
   "geometry": {
     "type": "Polygon",
     "coordinates": [
       [
         [
-          156.44,
+          -141.56,
           66.56
         ],
         [
-          156.44,
+          -141.56,
           -66.56
         ],
         [
-          180,
+          -8.44,
           -66.56
         ],
         [
-          180,
+          -8.44,
           66.56
         ],
         [
-          156.44,
-          66.56
-        ]
-      ],
-      [
-        [
-          -180,
-          66.56
-        ],
-        [
-          -180,
-          -66.56
-        ],
-        [
-          -70.44,
-          -66.56
-        ],
-        [
-          -70.44,
-          66.56
-        ],
-        [
-          -180,
+          -141.56,
           66.56
         ]
       ]
     ]
   },
   "bbox": [
-    156.44,
+    -141.56,
     -66.56,
-    -70.44,
+    -8.44,
     66.56
   ],
   "properties": {
-    "start_datetime": "2020-01-16T06:12:00.0Z",
-    "end_datetime": "2020-01-16T06:12:11.0Z",
+    "start_datetime": "2025-04-07T13:00:20.0Z",
+    "end_datetime": "2025-04-07T13:00:40.0Z",
     "mission": "GOES",
     "constellation": "GOES",
-    "platform": "GOES-17",
+    "platform": "GOES-19",
     "instruments": [
-      "FM2"
+      "FM4"
     ],
     "gsd": 8000,
     "processing:level": "L2",
-    "processing:facility": "RBU",
-    "goes:orbital_slot": "West",
+    "processing:facility": "WCDAS",
+    "goes:orbital_slot": "East",
     "goes:system_environment": "OR",
     "goes:lightning_wavelength": 777.3699951171875,
     "goes:group_time_threshold": 0.0,
     "goes:flash_time_threshold": 3.3299999237060547,
+    "goes:event_count": 7235,
+    "goes:group_count": 3374,
+    "goes:flash_count": 115,
     "goes:percent_navigated_L1b_events": 1.0,
     "goes:yaw_flip_flag": 2,
     "goes:nominal_satellite_subpoint_lat": 0.0,
     "goes:nominal_satellite_height": 35786.0234375,
-    "goes:nominal_satellite_subpoint_lon": -137.1999969482422,
+    "goes:nominal_satellite_subpoint_lon": -75.19999694824219,
     "goes:percent_uncorrectable_L0_errors": 0.0,
     "proj:code": "EPSG:4326",
     "proj:centroid": {
       "lat": 0.0,
-      "lon": -137.0
+      "lon": -75.0
     },
-    "datetime": "2020-01-16T06:12:05.500000Z"
+    "datetime": "2025-04-07T13:00:30Z"
   },
   "links": [
     {
@@ -138,7 +119,7 @@
           "name": "time_offset",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: event's time of occurrence",
-          "unit": "seconds since 2020-01-16 06:12:00.000"
+          "unit": "seconds since 2025-04-07 13:00:20.000"
         },
         {
           "name": "energy",
@@ -152,7 +133,7 @@
           "description": "product-unique lightning group identifier for one or more events"
         }
       ],
-      "table:row_count": 0,
+      "table:row_count": 7235,
       "roles": [
         "data",
         "cloud-optimized"
@@ -181,7 +162,7 @@
           "name": "time_offset_of_first_event",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: time of occurrence of first constituent event in flash",
-          "unit": "seconds since 2020-01-16 06:12:00.000"
+          "unit": "seconds since 2025-04-07 13:00:20.000"
         },
         {
           "name": "time_of_last_event",
@@ -191,7 +172,7 @@
           "name": "time_offset_of_last_event",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: time of occurrence of last constituent event in flash",
-          "unit": "seconds since 2020-01-16 06:12:00.000"
+          "unit": "seconds since 2025-04-07 13:00:20.000"
         },
         {
           "name": "frame_time_of_first_event",
@@ -201,7 +182,7 @@
           "name": "frame_time_offset_of_first_event",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: time of occurrence of first constituent event in flash",
-          "unit": "seconds since 2020-01-16 06:12:00.000"
+          "unit": "seconds since 2025-04-07 13:00:20.000"
         },
         {
           "name": "frame_time_of_last_event",
@@ -211,7 +192,7 @@
           "name": "frame_time_offset_of_last_event",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: time of occurrence of last constituent event in flash",
-          "unit": "seconds since 2020-01-16 06:12:00.000"
+          "unit": "seconds since 2025-04-07 13:00:20.000"
         },
         {
           "name": "area",
@@ -231,7 +212,7 @@
           "description": "GLM L2+ Lightning Detection: flash data quality flags"
         }
       ],
-      "table:row_count": 0,
+      "table:row_count": 115,
       "roles": [
         "data",
         "cloud-optimized"
@@ -260,7 +241,7 @@
           "name": "time_offset",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: mean time of group's constituent events' times of occurrence",
-          "unit": "seconds since 2020-01-16 06:12:00.000"
+          "unit": "seconds since 2025-04-07 13:00:20.000"
         },
         {
           "name": "frame_time",
@@ -270,7 +251,7 @@
           "name": "frame_time_offset",
           "type": "int16",
           "description": "GLM L2+ Lightning Detection: mean time of group's constituent events' times of occurrence",
-          "unit": "seconds since 2020-01-16 06:12:00.000"
+          "unit": "seconds since 2025-04-07 13:00:20.000"
         },
         {
           "name": "area",
@@ -295,17 +276,17 @@
           "description": "product-unique lightning flash identifier for one or more groups"
         }
       ],
-      "table:row_count": 0,
+      "table:row_count": 3374,
       "roles": [
         "data",
         "cloud-optimized"
       ]
     },
     "netcdf": {
-      "href": "./OR_GLM-L2-LCFA_G17_s20200160612000_e20200160612110_c20200160612335.nc",
+      "href": "./OR_GLM-L2-LCFA_G19_s20250971300200_e20250971300400_c20250971300420.nc",
       "type": "application/netcdf",
       "title": "Original netCDF 4 file",
-      "created": "2020-01-16T06:12:33.5Z",
+      "created": "2025-04-07T13:00:42.0Z",
       "cube:dimensions": {
         "number_of_flashes": {
           "type": "number_of_flashes",
@@ -331,15 +312,15 @@
         "number_of_time_bounds": {
           "type": "number_of_time_bounds",
           "extent": [
-            632427120.0,
-            632427131.0
+            797302820.0,
+            797302840.0
           ]
         },
         "number_of_field_of_view_bounds": {
           "type": "number_of_field_of_view_bounds",
           "extent": [
-            -203.55999755859375,
-            66.55999755859375
+            -139.39999389648438,
+            57.599998474121094
           ]
         },
         "number_of_wavelength_bounds": {
@@ -364,7 +345,7 @@
           ],
           "type": "data",
           "description": "event's time of occurrence",
-          "unit": "seconds since 2020-01-16 06:12:00.000",
+          "unit": "seconds since 2025-04-07 13:00:20.000",
           "axis": "T"
         },
         "event_lat": {
@@ -413,7 +394,7 @@
           ],
           "type": "data",
           "description": "mean time of group's constituent events' times of occurrence",
-          "unit": "seconds since 2020-01-16 06:12:00.000",
+          "unit": "seconds since 2025-04-07 13:00:20.000",
           "axis": "T"
         },
         "group_frame_time_offset": {
@@ -422,7 +403,7 @@
           ],
           "type": "data",
           "description": "mean time of group's constituent events' times of occurrence",
-          "unit": "seconds since 2020-01-16 06:12:00.000",
+          "unit": "seconds since 2025-04-07 13:00:20.000",
           "axis": "T"
         },
         "group_lat": {
@@ -486,7 +467,7 @@
           ],
           "type": "data",
           "description": "time of occurrence of first constituent event in flash",
-          "unit": "seconds since 2020-01-16 06:12:00.000",
+          "unit": "seconds since 2025-04-07 13:00:20.000",
           "axis": "T"
         },
         "flash_time_offset_of_last_event": {
@@ -495,7 +476,7 @@
           ],
           "type": "data",
           "description": "time of occurrence of last constituent event in flash",
-          "unit": "seconds since 2020-01-16 06:12:00.000"
+          "unit": "seconds since 2025-04-07 13:00:20.000"
         },
         "flash_frame_time_offset_of_first_event": {
           "dimensions": [
@@ -503,7 +484,7 @@
           ],
           "type": "data",
           "description": "time of occurrence of first constituent event in flash",
-          "unit": "seconds since 2020-01-16 06:12:00.000",
+          "unit": "seconds since 2025-04-07 13:00:20.000",
           "axis": "T"
         },
         "flash_frame_time_offset_of_last_event": {
@@ -512,7 +493,7 @@
           ],
           "type": "data",
           "description": "time of occurrence of last constituent event in flash",
-          "unit": "seconds since 2020-01-16 06:12:00.000"
+          "unit": "seconds since 2025-04-07 13:00:20.000"
         },
         "flash_lat": {
           "dimensions": [

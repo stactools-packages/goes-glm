@@ -1,7 +1,7 @@
 {
   "type": "Collection",
   "id": "goes-glm",
-  "stac_version": "1.0.0",
+  "stac_version": "1.1.0",
   "description": "The Lightning Detections: Events, Groups, and Flashes product consists of a hierarchy of earth-located lightning radiant energy measures including events, groups, and flashes. Lightning events are detected by the instrument. Lightning groups are a collection of one or more lightning events that satisfy temporal and spatial coincidence thresholds. Similarly, lightning flashes are a collection of one or more lightning groups that satisfy temporal and spatial coincidence thresholds. The product includes the relationship among lightning events, groups, and flashes, and the area coverage of lightning groups and flashes. The product also includes processing and data quality metadata, and satellite state and location information.",
   "links": [
     {
@@ -40,22 +40,27 @@
     {
       "rel": "item",
       "href": "./OR_GLM-L2-LCFA_G16_s20181591447400_e20181591448000/OR_GLM-L2-LCFA_G16_s20181591447400_e20181591448000.json",
-      "type": "application/json"
+      "type": "application/geo+json"
     },
     {
       "rel": "item",
       "href": "./OR_GLM-L2-LCFA_G17_s20182831047000_e20182831047200/OR_GLM-L2-LCFA_G17_s20182831047000_e20182831047200.json",
-      "type": "application/json"
+      "type": "application/geo+json"
     },
     {
       "rel": "item",
       "href": "./OR_GLM-L2-LCFA_G17_s20200160612000_e20200160612110/OR_GLM-L2-LCFA_G17_s20200160612000_e20200160612110.json",
-      "type": "application/json"
+      "type": "application/geo+json"
     },
     {
       "rel": "item",
       "href": "./OR_GLM-L2-LCFA_G18_s20230261900000_e20230261900200/OR_GLM-L2-LCFA_G18_s20230261900000_e20230261900200.json",
-      "type": "application/json"
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./OR_GLM-L2-LCFA_G19_s20250971300200_e20250971300400/OR_GLM-L2-LCFA_G19_s20250971300200_e20250971300400.json",
+      "type": "application/geo+json"
     }
   ],
   "stac_extensions": [
@@ -143,7 +148,7 @@
     "temporal": {
       "interval": [
         [
-          "2023-01-26T20:45:18.067663Z",
+          "2025-04-07T20:56:37.078675Z",
           null
         ]
       ]
@@ -156,6 +161,7 @@
     "GOES-16",
     "GOES-17",
     "GOES-18",
+    "GOES-19",
     "GLM",
     "Atmosphere",
     "Environmental",
@@ -185,7 +191,8 @@
     "platform": [
       "GOES-16",
       "GOES-17",
-      "GOES-18"
+      "GOES-18",
+      "GOES-19"
     ],
     "instruments": [
       "FM1",

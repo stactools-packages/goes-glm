@@ -22,6 +22,7 @@ with TemporaryDirectory() as temporary_directory:
             "OR_GLM-L2-LCFA_G17_s20182831047000_e20182831047200_c20182831047223.nc",
             "OR_GLM-L2-LCFA_G17_s20200160612000_e20200160612110_c20200160612335.nc",
             "OR_GLM-L2-LCFA_G18_s20230261900000_e20230261900200_c20230261900213.nc",
+            "OR_GLM-L2-LCFA_G19_s20250971300200_e20250971300400_c20250971300420.nc",
         )
     ):
         directory = Path(temporary_directory) / str(i)

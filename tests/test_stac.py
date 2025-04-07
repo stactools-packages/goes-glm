@@ -81,7 +81,7 @@ TEST_ITEMS: List[Dict[str, Any]] = [
 ]
 
 
-@pytest.mark.parametrize("options", TEST_COLLECTIONS)
+@pytest.mark.parametrize("options", TEST_COLLECTIONS)  # type: ignore
 def test_create_collection(options: Dict[str, Any]) -> None:
     id: str = options["id"] if "id" in options else "goes-glm"
     nogeoparquet: bool = options["nogeoparquet"] if "nogeoparquet" in options else False
@@ -101,7 +101,7 @@ def test_create_collection(options: Dict[str, Any]) -> None:
     summaries = collection_dict["summaries"]
     assert summaries["mission"] == ["GOES"]
     assert summaries["constellation"] == ["GOES"]
-    assert summaries["platform"] == ["GOES-16", "GOES-17", "GOES-18"]
+    assert summaries["platform"] == ["GOES-16", "GOES-17", "GOES-18", "GOES-19"]
     assert summaries["instruments"] == ["FM1", "FM2", "FM3"]
     assert summaries["gsd"] == [8000]
     assert summaries["processing:level"] == ["L2"]
@@ -135,7 +135,7 @@ def test_create_collection(options: Dict[str, Any]) -> None:
         assert "table:primary_geometry" not in asset
 
 
-@pytest.mark.parametrize("options", TEST_ITEMS)
+@pytest.mark.parametrize("options", TEST_ITEMS)  # type: ignore
 def test_create_item(options: Dict[str, Any]) -> None:
     name: str = options["name"]
     id: str = options["id"] if "id" in options else name
@@ -201,7 +201,7 @@ def test_create_item(options: Dict[str, Any]) -> None:
         assert item.properties["goes:orbital_slot"] == "West"
     else:
         assert "goes:orbital_slot" in item.properties
-    assert item.properties["proj:epsg"] == 4326
+    assert item.properties["proj:code"] == "EPSG:4326"
     assert item.properties["processing:level"] == "L2"
 
     asset_count = 4
