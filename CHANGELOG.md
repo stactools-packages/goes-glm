@@ -9,6 +9,9 @@ number as needed.
 
 ## [Unreleased]
 
+### Added
+- Added support for GOES-19 ([#29](https://github.com/stactools-packages/goes-glm/pull/29))
+
 ## [0.2.3]
 
 ### Fixed
