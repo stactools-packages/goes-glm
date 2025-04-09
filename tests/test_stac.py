@@ -81,7 +81,7 @@ TEST_ITEMS: List[Dict[str, Any]] = [
 ]
 
 
-@pytest.mark.parametrize("options", TEST_COLLECTIONS)  # type: ignore
+@pytest.mark.parametrize("options", TEST_COLLECTIONS)
 def test_create_collection(options: Dict[str, Any]) -> None:
     id: str = options["id"] if "id" in options else "goes-glm"
     nogeoparquet: bool = options["nogeoparquet"] if "nogeoparquet" in options else False
@@ -135,7 +135,7 @@ def test_create_collection(options: Dict[str, Any]) -> None:
         assert "table:primary_geometry" not in asset
 
 
-@pytest.mark.parametrize("options", TEST_ITEMS)  # type: ignore
+@pytest.mark.parametrize("options", TEST_ITEMS)
 def test_create_item(options: Dict[str, Any]) -> None:
     name: str = options["name"]
     id: str = options["id"] if "id" in options else name
