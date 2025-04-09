@@ -201,7 +201,7 @@ def test_create_item(options: Dict[str, Any]) -> None:
         assert item.properties["goes:orbital_slot"] == "West"
     else:
         assert "goes:orbital_slot" in item.properties
-    assert item.properties["proj:code"] == "EPSG:4326"
+    assert item.properties["proj:epsg"] == 4326
     assert item.properties["processing:level"] == "L2"
 
     asset_count = 4
