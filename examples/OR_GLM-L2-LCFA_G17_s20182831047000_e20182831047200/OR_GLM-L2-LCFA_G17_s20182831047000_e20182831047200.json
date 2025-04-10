@@ -1,39 +1,14 @@
 {
   "type": "Feature",
-  "stac_version": "1.0.0",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/goes/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/processing/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/table/v1.2.0/schema.json",
+    "https://stac-extensions.github.io/datacube/v2.1.0/schema.json"
+  ],
   "id": "OR_GLM-L2-LCFA_G17_s20182831047000_e20182831047200",
-  "properties": {
-    "start_datetime": "2018-10-10T10:47:00.0Z",
-    "end_datetime": "2018-10-10T10:47:20.0Z",
-    "mission": "GOES",
-    "constellation": "GOES",
-    "platform": "GOES-17",
-    "instruments": [
-      "FM2"
-    ],
-    "gsd": 8000,
-    "processing:level": "L2",
-    "processing:facility": "WCDAS",
-    "goes:orbital_slot": "Test",
-    "goes:system_environment": "OR",
-    "goes:lightning_wavelength": 777.3699951171875,
-    "goes:group_time_threshold": 0.0,
-    "goes:flash_time_threshold": 3.3299999237060547,
-    "goes:event_count": 6687,
-    "goes:group_count": 6171,
-    "goes:flash_count": 123,
-    "goes:percent_navigated_L1b_events": 1.0,
-    "goes:nominal_satellite_subpoint_lat": 0.0,
-    "goes:nominal_satellite_height": 35786.0234375,
-    "goes:nominal_satellite_subpoint_lon": -89.5,
-    "goes:percent_uncorrectable_L0_errors": 0.0,
-    "proj:epsg": 4326,
-    "proj:centroid": {
-      "lat": 0.0,
-      "lon": -89.5
-    },
-    "datetime": "2018-10-10T10:47:10Z"
-  },
   "geometry": {
     "type": "Polygon",
     "coordinates": [
@@ -60,6 +35,44 @@
         ]
       ]
     ]
+  },
+  "bbox": [
+    -156.06,
+    -66.56,
+    -22.94,
+    66.56
+  ],
+  "properties": {
+    "start_datetime": "2018-10-10T10:47:00.0Z",
+    "end_datetime": "2018-10-10T10:47:20.0Z",
+    "mission": "GOES",
+    "constellation": "GOES",
+    "platform": "GOES-17",
+    "instruments": [
+      "FM2"
+    ],
+    "gsd": 8000,
+    "processing:level": "L2",
+    "processing:facility": "WCDAS",
+    "goes:orbital_slot": "Test",
+    "goes:system_environment": "OR",
+    "goes:lightning_wavelength": 777.3699951171875,
+    "goes:group_time_threshold": 0.0,
+    "goes:flash_time_threshold": 3.3299999237060547,
+    "goes:event_count": 6687,
+    "goes:group_count": 6171,
+    "goes:flash_count": 123,
+    "goes:percent_navigated_L1b_events": 1.0,
+    "goes:nominal_satellite_subpoint_lat": 0.0,
+    "goes:nominal_satellite_height": 35786.0234375,
+    "goes:nominal_satellite_subpoint_lon": -89.5,
+    "goes:percent_uncorrectable_L0_errors": 0.0,
+    "proj:code": "EPSG:4326",
+    "proj:centroid": {
+      "lat": 0.0,
+      "lon": -89.5
+    },
+    "datetime": "2018-10-10T10:47:10Z"
   },
   "links": [
     {
@@ -610,18 +623,5 @@
       ]
     }
   },
-  "bbox": [
-    -156.06,
-    -66.56,
-    -22.94,
-    66.56
-  ],
-  "stac_extensions": [
-    "https://stac-extensions.github.io/goes/v1.0.0/schema.json",
-    "https://stac-extensions.github.io/processing/v1.1.0/schema.json",
-    "https://stac-extensions.github.io/projection/v1.0.0/schema.json",
-    "https://stac-extensions.github.io/table/v1.2.0/schema.json",
-    "https://stac-extensions.github.io/datacube/v2.1.0/schema.json"
-  ],
   "collection": "goes-glm"
 }

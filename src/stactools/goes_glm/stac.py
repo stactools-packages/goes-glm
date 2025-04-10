@@ -70,6 +70,7 @@ def create_collection(
         "GOES-16",
         "GOES-17",
         "GOES-18",
+        "GOES-19",
         "GLM",
         "Atmosphere",
         "Environmental",
@@ -135,7 +136,7 @@ def create_collection(
             ),
         )
 
-    item_assets = {}
+    item_assets: dict[str, AssetDefinition] = {}
 
     if not nogeoparquet:
         TableExtension.ext(collection, add_if_missing=True)
@@ -154,7 +155,7 @@ def create_collection(
         item_assets[constants.NETCDF_KEY] = AssetDefinition(asset)
 
     item_assets_attrs = ItemAssetsExtension.ext(collection, add_if_missing=True)
-    item_assets_attrs.item_assets = item_assets
+    item_assets_attrs.item_assets = dict(item_assets)
 
     return collection
 

@@ -101,7 +101,7 @@ def test_create_collection(options: Dict[str, Any]) -> None:
     summaries = collection_dict["summaries"]
     assert summaries["mission"] == ["GOES"]
     assert summaries["constellation"] == ["GOES"]
-    assert summaries["platform"] == ["GOES-16", "GOES-17", "GOES-18"]
+    assert summaries["platform"] == ["GOES-16", "GOES-17", "GOES-18", "GOES-19"]
     assert summaries["instruments"] == ["FM1", "FM2", "FM3"]
     assert summaries["gsd"] == [8000]
     assert summaries["processing:level"] == ["L2"]
